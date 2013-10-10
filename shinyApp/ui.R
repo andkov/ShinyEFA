@@ -13,7 +13,7 @@ shinyUI(pageWithSidebar(
                       "Promax" = "promax",
                       "Quartimax" = "quartimax",
                       "Quartimin" = "quartimin",
-                      "Crawford-Ferguson"="cf")),
+                      "Crawford-Ferguson"="CF")),
     br(),
     
     numericInput("nfactors", 
@@ -23,13 +23,13 @@ shinyUI(pageWithSidebar(
                 max = 10),
     br(),
     
-    checkboxInput("oblique","Correlated Factors?", value=FALSE)
+    checkboxInput("oblique","Correlated Factors?", value=FALSE)    
   ),
   
   mainPanel(
     tabsetPanel(
       tabPanel("Plot", plotOutput("plot")), 
-      tabPanel("Table", tableOutput("table"))
+      tabPanel("Table", tableOutput("table")), selected="Table"
     )
   )
 ))

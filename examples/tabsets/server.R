@@ -9,14 +9,14 @@ shinyServer(function(input, output) {
   # called whenever the inputs change. The renderers defined 
   # below then all use the value computed from this expression
   data <- reactive({  
-    dist <- switch(input$dist,
+    distribution <- switch(input$dist,
                    norm = rnorm,
                    unif = runif,
                    lnorm = rlnorm,
                    exp = rexp,
                    rnorm)
     
-    dist(input$n)
+    distribution(input$n)
   })
   
   # Generate a plot of the data. Also uses the inputs to build the 
