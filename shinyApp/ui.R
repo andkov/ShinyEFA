@@ -31,8 +31,9 @@ shinyUI(pageWithSidebar(
   
   mainPanel(
     tabsetPanel(
+      tabPanel("Eigens and RMSEA", plotOutput("diagnostics")),
       tabPanel("Plot", plotOutput("plot")), 
-      tabPanel("Table", tableOutput("table")), selected="Table"
-    )
+      tabPanel("Table", tableOutput("table")),
+      selected="Table")
   )
 ))

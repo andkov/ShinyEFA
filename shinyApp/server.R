@@ -65,4 +65,7 @@ shinyServer(function(input, output) {
                      dsFORp$Oblique==input$oblique),]
     
     })
+   output$plot <- RenderPlot({
+     
+   })
 })

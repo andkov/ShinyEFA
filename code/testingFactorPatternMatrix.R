@@ -1,7 +1,7 @@
 rm(list=ls(all=TRUE))
 
 library(ggplot2)
-fpm<-read.csv("data/fpm.csv")
+fpm<-read.csv("shinyApp/data/fpm.csv")
 str(fpm)
 colors<- c("darksalmon" ,"lightskyblue")
 title<-"Basic Title"
