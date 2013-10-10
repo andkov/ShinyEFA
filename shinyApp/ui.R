@@ -23,7 +23,10 @@ shinyUI(pageWithSidebar(
                 max = 10),
     br(),
     
-    checkboxInput("oblique","Correlated Factors?", value=FALSE)    
+    checkboxInput("oblique","Correlated Factors?", value=FALSE),
+    
+    sliderInput("kappa","Select the value of kappa:",
+                value=0, min=0, max=1, step=.2)
   ),
   
   mainPanel(

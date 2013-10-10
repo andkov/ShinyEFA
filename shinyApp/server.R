@@ -20,13 +20,24 @@ shinyServer(function(input, output) {
                        "Quartimin" = "quartimin",
                        "Crawford-Ferguson"="CF")
                          
-
-
-   })
+  selectKappa <- reactive(function(){
+    return(input$kappa)
+  })
+ 
+  selectOblique <-reactive(function(){
+    return(input$oblique)
+  })
+                                
+  selectNfactors <- reactive(function(){
+    return(input$nfactors)
+  })                               
+    })
 
    output$plot <- renderPlot({
 #      # # fpmLong is used to produce the graph of factor loadings
-     fpmLong<-dsFORp[which(dsFORp$Rotation==input$rotation),]
+     fpmLong<-dsFORp[which(dsFORp$Rotation==input$rotation & 
+                             dsFORp$Kappa==input$kappa &
+                             dsFORp$Oblique==input$oblique),]
 #      
      # The colors for negative and positve values of factor loadings
      colors<- c("darksalmon" ,"lightskyblue")
@@ -49,7 +60,9 @@ shinyServer(function(input, output) {
   output$table <- renderTable({
     # fpmShort is used to create the table of values for the tabset "Table"
     
-    patterns[which(patterns$Rotation==input$rotation),]
+    patterns[which(patterns$Rotation==input$rotation & 
+                     dsFORp$Kappa==input$kappa &
+                     dsFORp$Oblique==input$oblique),]
     
     })
 })
