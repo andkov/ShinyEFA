@@ -19,7 +19,7 @@ shinyServer(function(input, output) {
                        "Promax" = "promax",
                        "Quartimax" = "quartimax",
                        "Quartimin" = "quartimin",
-                       "Crawford-Ferguson"="cf")
+                       "Crawford-Ferguson"="CF")
 })
 ###
    output$plot <- renderPlot({
@@ -27,9 +27,9 @@ shinyServer(function(input, output) {
      colors<- c("darksalmon" ,"lightskyblue")
      title<-"Basic Title"
      # fpmShort is used to create the table of values for the tabset "Table"
-     fpmShort<-patterns[which(fpm$Rotation==input$rotation),]
+     fpmShort<-patterns[which(patterns$Rotation==input$rotation),]
      # fpmLong is used to produce the graph of factor loadings
-     fpmLong<-dsFORp[which(fpm$Rotation==input$rotation),]
+     fpmLong<-dsFORp[which(dsFORp$Rotation==input$rotation),]
     
      p<-ggplot(fpmLong, aes(x=factor, y=loading, fill=positive))+
        ggtitle(title)+ 
@@ -45,6 +45,6 @@ shinyServer(function(input, output) {
 
   # Generate an HTML table view of the data
   output$table <- renderTable({
-    data.frame(datasetInput())
+    head(datasetInput(),5)
   })
 })
