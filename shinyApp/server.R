@@ -2,7 +2,7 @@ library(shiny)
 library(datasets)
 library(ggplot2) # load ggplot
 # Reads the matrix containing solutions for all rotations and values of kappa
-patterns<-read.csv("./data/fpm.csv")
+patterns<-read.csv("data/fpm.csv")
 # Transforms dataset into a long format to be used in ggplot
 dsFORp <- reshape2::melt(patterns, id.vars=c("Oblique","Rotation","Kappa","Varname"))  ## id.vars declares MEASURED variables (as opposed to RESPONSE variable)
 dsFORp <- plyr::rename(dsFORp, replace=c(variable="factor",value="loading"))
