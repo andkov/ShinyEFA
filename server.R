@@ -1,12 +1,12 @@
 library(shiny)
 library(datasets)
 library(ggplot2) # load ggplot
-
-
+# Reads the matrix containing solutions for all rotations and values of kappa
 patterns<-read.csv("./data/fpm.csv")
+# Transforms dataset into a long format to be used in ggplot
 dsFORp <- reshape2::melt(patterns, id.vars=c("Oblique","Rotation","Kappa","Varname"))  ## id.vars declares MEASURED variables (as opposed to RESPONSE variable)
 dsFORp <- plyr::rename(dsFORp, replace=c(variable="factor",value="loading"))
-dsFORp$positive <- dsFORp$loading >= 0 # positive value?
+dsFORp$positive <- dsFORp$loading >= 0 # is factor loading positive? color coded in ggplot
 dsFORp$loading<-abs(as.numeric(dsFORp$loading))
 
 # Define server logic for random distribution application
@@ -23,15 +23,15 @@ shinyServer(function(input, output) {
 })
 ###
    output$plot <- renderPlot({
-#    dsLong<-patterns[which(Rotation==input$rotation & Oblique==input$oblique )]
-   
+     # The colors for negative and positve values of factor loadings
      colors<- c("darksalmon" ,"lightskyblue")
      title<-"Basic Title"
-     
+     # fpmShort is used to create the table of values for the tabset "Table"
      fpmShort<-patterns[which(fpm$Rotation==input$rotation),]
-     fpm<-dsFORp[which(fpm$Rotation==input$rotation),]
+     # fpmLong is used to produce the graph of factor loadings
+     fpmLong<-dsFORp[which(fpm$Rotation==input$rotation),]
     
-     p<-ggplot(dsFORp, aes(x=factor, y=loading, fill=positive))+
+     p<-ggplot(fpmLong, aes(x=factor, y=loading, fill=positive))+
        ggtitle(title)+ 
        geom_bar(stat="identity")+
        scale_fill_manual(values=colors)+
