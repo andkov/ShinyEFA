@@ -1,0 +1,15 @@
+{
+    "contents" : "library(shiny)\n\n# Define UI for random distribution application \nshinyUI(pageWithSidebar(\n  \n  # Application title\n  headerPanel(\"Visual Rotation Tool\"),\n  \n   sidebarPanel(\n    selectInput(\"dataset\",\"Select a dataset:\", \n                choices=\"Physical\",\"Cognitive\",\"Emotional\"),\n    \n    radioButtons(\"rotation\", \"Select rotation:\",\n                 list(\"Unrotated\" = \"none\",\n                      \"Varimax\" = \"varimax\",\n                      \"Promax\" = \"promax\",\n                      \"Quartimax\" = \"quartimax\",\n                      \"Quartimin\" = \"quartimin\",\n                      \"Crawford-Ferguson\"=\"CF\")),\n    br(),\n    \n    numericInput(\"nfactors\", \n                \"Select the number of factors to retain:\", \n                value = 3,\n                min = 1, \n                max = 10),\n    br(),\n    \n    checkboxInput(\"oblique\",\"Correlated Factors?\", value=FALSE),\n    \n    sliderInput(\"kappa\",\"Select the value of kappa:\",\n                value=0, min=0, max=1, step=.2)\n  ),\n  \n  mainPanel(\n    tabsetPanel(\n      tabPanel(\"Eigens and RMSEA\", plotOutput(\"diagnostics\")),\n      tabPanel(\"Plot\", plotOutput(\"plot\")), \n      tabPanel(\"Table\", tableOutput(\"table\")),\n      selected=\"Table\")\n  )\n))",
+    "created" : 1381373078907.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3342441235",
+    "id" : "B97D71BB",
+    "lastKnownWriteTime" : 1381439081,
+    "path" : "~/GitHub/ShinyEFA/shinyApp/ui.R",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

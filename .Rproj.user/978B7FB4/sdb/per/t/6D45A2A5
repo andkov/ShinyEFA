@@ -1,0 +1,15 @@
+{
+    "contents" : "rm(list=ls(all=TRUE))\n# install.packages(\"GPArotation\")\n# install.packages(\"psych\")\nlibrary(GPArotation)\ndata(Harman.8)\nlibrary(psych)\ndata(Harman)\n\n##### Adding rotations to AdvancedFactorFunctions #####\nAthleticsData <- read.csv(file.path(getwd(),\"shinyApp/data\",\"AthleticsData.csv\"))\nR<-cor(AthleticsData) # Correlation matrix, 8 physical attribues of 305 girsl (from Harman, 1976)\n\nsource(file.path(getwd(),\"code/sourced\",\"Steiger R library functions.txt\"))\nsource(file.path(getwd(),\"code/sourced\",\"AdvancedFactorFunctions_CF.R\"))\n# source(file.path(getwd(),\"code/sourced\",\"AdvancedFactorFunctions.R\"))\n\n# R<-as.matrix(Harman.Holzinger)\nScree.Plot(R)\nFA.Stats(R,n.factors=1:4,n.obs=305, RMSEA.cutoff=0.05)\nmlfa.out<-MLFA(R,n.factor=3, n.obs=305)\nfit<-mlfa.out\n\n# For quick access of individual solution from MLFA\nstr(fit)\nfit$Unrotated\nfit$Varimaxye\nfit$Promax\nfit$Quartimin\nfit$Bifactor\nfit$BifactorOblique\nfit$CF\nfit$CFq\n\n# L<-fit$Varimax$F\nL<-fit$Promax$F\n\ncfT<-cfT(L, Tmat=diag(ncol(L)), kappa=0, normalize=FALSE, eps=1e-5, maxit=1000)\ncfQ<-cfQ(L, Tmat=diag(ncol(L)), kappa=0, normalize=FALSE, eps=1e-5, maxit=1000)\nLcfT<-cfT$loadings\nLcfQ<-cfQ$loadings\nL\nLcfT\nLcfQ\n\n\n\n\n\n\n",
+    "created" : 1381418534177.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3002151696",
+    "id" : "6D45A2A5",
+    "lastKnownWriteTime" : 1381462265,
+    "path" : "~/GitHub/ShinyEFA/code/testingMLFA.R",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

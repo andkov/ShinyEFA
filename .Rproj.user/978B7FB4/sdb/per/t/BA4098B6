@@ -1,0 +1,15 @@
+{
+    "contents" : "rm(list=ls(all=TRUE))\n\nlibrary(ggplot2)\nfpm<-read.csv(\"shinyApp/data/fpm.csv\")\nstr(fpm)\ncolors<- c(\"darksalmon\" ,\"lightskyblue\")\ntitle<-\"Basic Title\"\n\nfpm<-fpm[which(fpm$Rotation==\"varimax\"),]\n\ndsFORp <- reshape2::melt(fpm, id.vars=c(\"Oblique\",\"Rotation\",\"Kappa\",\"Varname\"))  ## id.vars declares MEASURED variables (as opposed to RESPONSE variable)\ndsFORp <- plyr::rename(dsFORp, replace=c(variable=\"factor\",value=\"loading\"))\ndsFORp$positive <- dsFORp$loading >= 0 # positive value?\ndsFORp$loading<-abs(as.numeric(dsFORp$loading))\nhead(dsFORp,20)\nstr(dsFORp)\n\n\np<-ggplot(dsFORp, aes(x=factor, y=loading, fill=positive))+\n  ggtitle(title)+ \n  geom_bar(stat=\"identity\")+\n  scale_fill_manual(values=colors)+\n  scale_y_continuous(limits=c(0,1))+\n  theme(axis.text.x =element_text(angle=0,hjust=.5))+\n  facet_grid(Varname~.)\np",
+    "created" : 1381372689906.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3228212445",
+    "id" : "BA4098B6",
+    "lastKnownWriteTime" : 1381387341,
+    "path" : "~/GitHub/ShinyEFA/code/testingFactorPatternMatrix.R",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

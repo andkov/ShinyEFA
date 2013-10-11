@@ -1,0 +1,16 @@
+{
+    "contents" : "rm(list=ls(all=TRUE))\nlibrary(shiny)\nlibrary(datasets)\nlibrary(ggplot2) # load ggplot\nlibrary(GPArotation)\ndata(Harman8)\nlibrary(psych)\ndata(Harman)\n# Correlations of eight physical variables (from Harman, 1966), N = 305\nphysical<-Harman.8\nn.physical<-305\nwrite.csv(physical,\"physical.csv\")\n# Harman.Holzinger: 9 x 9 correlation matrix of cognitive ability tests, N = 696.\ncognitive<-Harman.Holzinger\nn.cognitive<-696\nwrite.csv(cognitive,\"cognitive.csv\")\n# Harman.Burt: a 8 x 8 correlation matrix of “emotional\" items. N = 172\nemotional <-Harman.Burt\nn.emotional<-172\nwrite.csv(emotional,\"emotional.csv\")\n# ##### Adding rotations to AdvancedFactorFunctions #####\n# AthleticsData <- read.csv(file.path(getwd(),\"shinyApp/data\",\"AthleticsData.csv\"))\n# R<-cor(AthleticsData) # Correlation matrix, 8 physical attribues of 305 girsl (from Harman, 1976)\nrm(list=setdiff(ls(),c(\"physical\",\"cognitive\",\"emotional\")))\n\n# # to be used in shinyApp\n# source(\"Steiger R library functions.txt\"))\n# source(\"AdvancedFactorFunctions_CF.R\"))\n# to be used for testing\nsource(file.path(getwd(),\"code/sourced\",\"Steiger R library functions.txt\"))\nsource(file.path(getwd(),\"code/sourced\",\"AdvancedFactorFunctions_CF.R\"))\n\nR<-physical #input$dataset\n\n# R<-as.matrix(Harman.Holzinger)\nscreePlot<-Scree.Plot(R)\nFA.Stats(R,n.factors=1:4,n.obs=305, RMSEA.cutoff=0.05)\nmlfa.out<-MLFA(R,n.factor=3, n.obs=305)\nfit<-mlfa.out",
+    "created" : 1381438217941.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2726083537",
+    "id" : "A29F832A",
+    "lastKnownWriteTime" : 1381439736,
+    "path" : "~/GitHub/ShinyEFA/shinyApp/dataprep.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

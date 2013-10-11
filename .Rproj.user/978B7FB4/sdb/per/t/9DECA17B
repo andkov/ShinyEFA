@@ -1,0 +1,15 @@
+{
+    "contents" : "source(\"dataprep.R\") # \n\n# Reads the matrix containing solutions for all rotations and values of kappa\npatterns<-read.csv(\"data/fpm.csv\") # short form\n# Transforms dataset into a long format to be used in ggplot\ndsFORp <- reshape2::melt(patterns, id.vars=c(\"Oblique\",\"Rotation\",\"Kappa\",\"Varname\"))  ## id.vars declares MEASURED variables (as opposed to RESPONSE variable)\ndsFORp <- plyr::rename(dsFORp, replace=c(variable=\"factor\",value=\"loading\"))\ndsFORp$positive <- dsFORp$loading >= 0 # is factor loading positive? color coded in ggplot\ndsFORp$loading<-abs(as.numeric(dsFORp$loading)) # Long form\n\n# Define server logic for random distribution application\nshinyServer(function(input, output) {\n   datasetInput<- reactive({\n     switch(input$dataset,\n            \"Physical\"=physical,\n            \"Cognitive\"=cognitive,\n            \"Emotional\"=emotional)\n   })\n  \n   selectedRotation <- reactive({switch(input$rotation,\n                       \"Unrotated\" = \"none\",\n                       \"Varimax\" = \"varimax\",\n                       \"Promax\" = \"promax\",\n                       \"Quartimax\" = \"quartimax\",\n                       \"Quartimin\" = \"quartimin\",\n                       \"Crawford-Ferguson\"=\"CF\")\n                         \n  selectKappa <- reactive(function(){\n    return(input$kappa)\n  })\n \n  selectOblique <-reactive(function(){\n    return(input$oblique)\n  })\n                                \n  selectNfactors <- reactive(function(){\n    return(input$nfactors)\n  })                               \n    })\n\n   output$plot <- renderPlot({\n#      # # fpmLong is used to produce the graph of factor loadings\n     fpmLong<-dsFORp[which(dsFORp$Rotation==input$rotation & \n                             dsFORp$Kappa==input$kappa &\n                             dsFORp$Oblique==input$oblique),]\n#      \n     # The colors for negative and positve values of factor loadings\n     colors<- c(\"darksalmon\" ,\"lightskyblue\")\n     title<-\"Basic Title\"\n\n    \n     p<-ggplot(fpmLong, aes(x=factor, y=loading, fill=positive))+\n       ggtitle(title)+ \n       geom_bar(stat=\"identity\")+\n       scale_fill_manual(values=colors)+\n       scale_y_continuous(limits=c(0,1))+\n       theme(axis.text.x =element_text(angle=0,hjust=.5))+\n       facet_grid(Varname~.)\n     print(p)\n     \n  })\n  \n\n  # Generate an HTML table view of the data\n  output$table <- renderTable({\n    # fpmShort is used to create the table of values for the tabset \"Table\"\n    \n    patterns[which(patterns$Rotation==input$rotation & \n                     dsFORp$Kappa==input$kappa &\n                     dsFORp$Oblique==input$oblique),]\n    \n    })\n   output$plot <- RenderPlot({\n     \n   })\n})",
+    "created" : 1381373079776.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3073531336",
+    "id" : "9DECA17B",
+    "lastKnownWriteTime" : 1381439080,
+    "path" : "~/GitHub/ShinyEFA/shinyApp/server.R",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}
