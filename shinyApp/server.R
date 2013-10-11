@@ -1,6 +1,5 @@
-library(shiny)
-library(datasets)
-library(ggplot2) # load ggplot
+source("dataprep.R") # 
+
 # Reads the matrix containing solutions for all rotations and values of kappa
 patterns<-read.csv("data/fpm.csv") # short form
 # Transforms dataset into a long format to be used in ggplot
@@ -11,6 +10,12 @@ dsFORp$loading<-abs(as.numeric(dsFORp$loading)) # Long form
 
 # Define server logic for random distribution application
 shinyServer(function(input, output) {
+   datasetInput<- reactive({
+     switch(input$dataset,
+            "Physical"=physical,
+            "Cognitive"=cognitive,
+            "Emotional"=emotional)
+   })
   
    selectedRotation <- reactive({switch(input$rotation,
                        "Unrotated" = "none",

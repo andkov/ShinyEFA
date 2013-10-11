@@ -7,6 +7,9 @@ shinyUI(pageWithSidebar(
   headerPanel("Visual Rotation Tool"),
   
    sidebarPanel(
+    selectInput("dataset","Select a dataset:", 
+                choices="Physical","Cognitive","Emotional"),
+    
     radioButtons("rotation", "Select rotation:",
                  list("Unrotated" = "none",
                       "Varimax" = "varimax",

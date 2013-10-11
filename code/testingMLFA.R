@@ -1,19 +1,20 @@
-install.packages("GPArotation")
-install.packages("psych")
+rm(list=ls(all=TRUE))
+# install.packages("GPArotation")
+# install.packages("psych")
 library(GPArotation)
-data(Harman)
-library(psych)
 data(Harman.8)
+library(psych)
+data(Harman)
 
 ##### Adding rotations to AdvancedFactorFunctions #####
-# AthleticsData <- read.csv(file.path(getwd(),"datasets","AthleticsData.csv"))
-# R<-cor(AthleticsData) # Correlation matrix, 8 physical attribues of 305 girsl (from Harman, 1976)
+AthleticsData <- read.csv(file.path(getwd(),"shinyApp/data","AthleticsData.csv"))
+R<-cor(AthleticsData) # Correlation matrix, 8 physical attribues of 305 girsl (from Harman, 1976)
 
 source(file.path(getwd(),"code/sourced","Steiger R library functions.txt"))
 source(file.path(getwd(),"code/sourced","AdvancedFactorFunctions_CF.R"))
 # source(file.path(getwd(),"code/sourced","AdvancedFactorFunctions.R"))
 
-R<-as.matrix(Harman.Holzinger)
+# R<-as.matrix(Harman.Holzinger)
 Scree.Plot(R)
 FA.Stats(R,n.factors=1:4,n.obs=305, RMSEA.cutoff=0.05)
 mlfa.out<-MLFA(R,n.factor=3, n.obs=305)
