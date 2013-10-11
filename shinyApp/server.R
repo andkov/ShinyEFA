@@ -1,50 +1,39 @@
 # http://rstudio.github.io/shiny/tutorial/#reactivity - server
 library(shiny)
 source("dataprep.R")
+colnames.cognitive<-c("Word Meaning",
+                      "Sentence Completion",
+                      "Odd Words",
+                      "Mixed Arithmetic",
+                      "Remainders",
+                      "Missing Numbers",
+                      "Gloves",
+                      "Boots",
+                      "Hatchets")
 
 # Define server logic required to summarize and view the selected dataset
 shinyServer(function(input, output) {
   
-  # By declaring datasetInput as a reactive expression we ensure that:
-  #
-  #  1) It is only called when the inputs it depends on changes
-  #  2) The computation and result are shared by all the callers (it 
-  #     only executes a single time)
-  #  3) When the inputs change and the expression is re-executed, the
-  #     new result is compared to the previous result; if the two are
-  #     identical, then the callers are not notified
-  #
   datasetInput <- reactive({
     switch(input$dataset,
            "Cognitive Abilities"=cognitive,
            "Emotional Traits"=emotional)
   })
-  
-  # The output$caption is computed based on a reactive expression that
-  # returns input$caption. When the user changes the "caption" field:
-  #
-  #  1) This expression is automatically called to recompute the output 
-  #  2) The new caption is pushed back to the browser for re-display
-  # 
-  # Note that because the data-oriented reactive expression below don't 
-  # depend on input$caption, those expression are NOT called when 
-  # input$caption changes.
-  output$caption <- renderText({
-    input$caption
-  })
-  
-  # The output$summary depends on the datasetInput reactive expression, 
-  # so will be re-executed whenever datasetInput is re-executed 
-  # (i.e. whenever the input$dataset changes)
-  output$summary <- renderPrint({
-    dataset <- datasetInput()
-    summary(dataset)
-  })
-  
-  # The output$view depends on both the databaseInput reactive expression
-  # and input$obs, so will be re-executed whenever input$dataset or 
-  # input$obs is changed. 
-  output$R <- renderTable({
-    datasetInput()
+
+
+  output$corrgram <- renderPlot({
+    corrgram(datasetInput(),upper.panel=panel.conf,
+             lower.panel=panel.pie,type="cor",order=FALSE)
+ 
+  output$dd<-renderPrint({
+    if(datasetInput()=="cognitive") {
+      "The nine psychological variables from Harman (1967, p 244)are taken from unpublished class notes 
+of K.J. Holzinger with 696 participants."} 
+    else if(datasetInput()=="emotional") {
+      "Eight emotional variables are taken from Harman (1967, p 164)
+who in turn adapted them from Burt (1939). They are said be from 172 normal children aged nine to twelve.
+As pointed out by Jan DeLeeuw, the Burt data set is a subset of 8 variables from the original 11 reported 
+by Burt in 1915. That matrix has the same problem."}
   })
 })
+})  

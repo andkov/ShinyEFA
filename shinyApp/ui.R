@@ -19,15 +19,13 @@ shinyUI(pageWithSidebar(
   
   ),
   
-  
   # Show the caption, a summary of the dataset and an HTML table with
   # the requested number of observations
   mainPanel(
     h3(textOutput("Description of the current tab")), 
     tabsetPanel(
       tabPanel("Variables"),
-      tabPanel("R",
-               tableOutput("R")),
+      tabPanel("R", plotOutput("corrgram"),textOutput("dd")),
       tabPanel("Eigens"),
       tabPanel("RMSEA"),
       tabPanel("Plot" ), 
