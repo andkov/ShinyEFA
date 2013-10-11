@@ -1,5 +1,7 @@
 rm(list=ls(all=TRUE))
 
 library(shiny)
-runApp("shinyApp")
+# setwd("C:/Users/kovalav/Documents/GitHub/ShinyEFA")
+shiny::runApp('shinyapp')
+
 

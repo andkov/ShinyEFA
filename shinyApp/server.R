@@ -1,76 +1,50 @@
-source("dataprep.R") # 
+# http://rstudio.github.io/shiny/tutorial/#reactivity - server
+library(shiny)
+source("dataprep.R")
 
-# Reads the matrix containing solutions for all rotations and values of kappa
-patterns<-read.csv("data/fpm.csv") # short form
-# Transforms dataset into a long format to be used in ggplot
-dsFORp <- reshape2::melt(patterns, id.vars=c("Oblique","Rotation","Kappa","Varname"))  ## id.vars declares MEASURED variables (as opposed to RESPONSE variable)
-dsFORp <- plyr::rename(dsFORp, replace=c(variable="factor",value="loading"))
-dsFORp$positive <- dsFORp$loading >= 0 # is factor loading positive? color coded in ggplot
-dsFORp$loading<-abs(as.numeric(dsFORp$loading)) # Long form
-
-# Define server logic for random distribution application
+# Define server logic required to summarize and view the selected dataset
 shinyServer(function(input, output) {
-   datasetInput<- reactive({
-     switch(input$dataset,
-            "Physical"=physical,
-            "Cognitive"=cognitive,
-            "Emotional"=emotional)
-   })
   
-   selectedRotation <- reactive({switch(input$rotation,
-                       "Unrotated" = "none",
-                       "Varimax" = "varimax",
-                       "Promax" = "promax",
-                       "Quartimax" = "quartimax",
-                       "Quartimin" = "quartimin",
-                       "Crawford-Ferguson"="CF")
-                         
-  selectKappa <- reactive(function(){
-    return(input$kappa)
-  })
- 
-  selectOblique <-reactive(function(){
-    return(input$oblique)
-  })
-                                
-  selectNfactors <- reactive(function(){
-    return(input$nfactors)
-  })                               
-    })
-
-   output$plot <- renderPlot({
-#      # # fpmLong is used to produce the graph of factor loadings
-     fpmLong<-dsFORp[which(dsFORp$Rotation==input$rotation & 
-                             dsFORp$Kappa==input$kappa &
-                             dsFORp$Oblique==input$oblique),]
-#      
-     # The colors for negative and positve values of factor loadings
-     colors<- c("darksalmon" ,"lightskyblue")
-     title<-"Basic Title"
-
-    
-     p<-ggplot(fpmLong, aes(x=factor, y=loading, fill=positive))+
-       ggtitle(title)+ 
-       geom_bar(stat="identity")+
-       scale_fill_manual(values=colors)+
-       scale_y_continuous(limits=c(0,1))+
-       theme(axis.text.x =element_text(angle=0,hjust=.5))+
-       facet_grid(Varname~.)
-     print(p)
-     
+  # By declaring datasetInput as a reactive expression we ensure that:
+  #
+  #  1) It is only called when the inputs it depends on changes
+  #  2) The computation and result are shared by all the callers (it 
+  #     only executes a single time)
+  #  3) When the inputs change and the expression is re-executed, the
+  #     new result is compared to the previous result; if the two are
+  #     identical, then the callers are not notified
+  #
+  datasetInput <- reactive({
+    switch(input$dataset,
+           "Cognitive Abilities"=cognitive,
+           "Emotional Traits"=emotional)
   })
   
-
-  # Generate an HTML table view of the data
-  output$table <- renderTable({
-    # fpmShort is used to create the table of values for the tabset "Table"
-    
-    patterns[which(patterns$Rotation==input$rotation & 
-                     dsFORp$Kappa==input$kappa &
-                     dsFORp$Oblique==input$oblique),]
-    
-    })
-   output$plot <- RenderPlot({
-     
-   })
+  # The output$caption is computed based on a reactive expression that
+  # returns input$caption. When the user changes the "caption" field:
+  #
+  #  1) This expression is automatically called to recompute the output 
+  #  2) The new caption is pushed back to the browser for re-display
+  # 
+  # Note that because the data-oriented reactive expression below don't 
+  # depend on input$caption, those expression are NOT called when 
+  # input$caption changes.
+  output$caption <- renderText({
+    input$caption
+  })
+  
+  # The output$summary depends on the datasetInput reactive expression, 
+  # so will be re-executed whenever datasetInput is re-executed 
+  # (i.e. whenever the input$dataset changes)
+  output$summary <- renderPrint({
+    dataset <- datasetInput()
+    summary(dataset)
+  })
+  
+  # The output$view depends on both the databaseInput reactive expression
+  # and input$obs, so will be re-executed whenever input$dataset or 
+  # input$obs is changed. 
+  output$R <- renderTable({
+    datasetInput()
+  })
 })
