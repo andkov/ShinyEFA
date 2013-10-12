@@ -94,29 +94,36 @@ shinyServer( function(input, output) {
   output$p<-renderText({ 
     p()
   })
-# Prints the plot of the pattern matrix
+
   output$patternPlot<-renderPlot({
-# Currently produces ERROR: Passing functions to 'renderPlot' is deprecated. Please use expressions instead. See ?renderPlot for more information.
 # Reactive code
   R<-datasetInput() # the choice of the dataset in ui.R
   k<-input$k # the choice of the number of factors to retain from ui.R
   n.obs<-n()  # choice of the dataset defines  n - its sample size
   p<-p() # the choice of dataset defines p - its number of variables
+  # procedures
   A <- factanal(covmat=R,n.obs=n.obs,factors=k,maxit=1000,rotation="none")
- # input$dataset is not passing name of the dataset to facanal(), log:
- # Error in factanal(covmat = input$dataset, n.obs = n(), factors = input$k,:
- #'covmat' is of unknown type
     FPM<-A$loadings[1:p,] # FPM - Factor Pattern Matrix
     FPM<-cbind(FPM,matrix(numeric(0),p,p-k)) # uppends empty columps to have p columns
     colnames(FPM)<-paste0("F",1:p) # renames for better presentation in tables and graphs
-    dsFORpWide<-FPM
-    source("patternPlot.R")
-  })
+  ##  output :
+  source("patternPlot.R")
+  }) # FPM plot (Factor Pattern Matrix)
 
   output$patternMatrix<-renderTable({
-    R<-datasetInput()
-    R
-  })
+  # Reactive code
+  R<-datasetInput() # the choice of the dataset in ui.R
+  k<-input$k # the choice of the number of factors to retain from ui.R
+  n.obs<-n()  # choice of the dataset defines  n - its sample size
+  p<-p() # the choice of dataset defines p - its number of variables
+  # procedures
+  A <- factanal(covmat=R,n.obs=n.obs,factors=k,maxit=1000,rotation="none")
+    FPM<-A$loadings[1:p,] # FPM - Factor Pattern Matrix
+    FPM<-cbind(FPM,matrix(numeric(0),p,p-k)) # uppends empty columps to have p columns
+    colnames(FPM)<-paste0("F",1:p) # renames for better presentation in tables and graphs
+  ##  output:
+  FPM  
+  })# FPM table (Factor Pattern Matrix)
 
 })
 

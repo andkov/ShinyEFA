@@ -21,7 +21,7 @@ shinyUI(pageWithSidebar(
     selectInput("dataset", "Choose a dataset:", 
                 choices = c("Cognitive Abilities", "Emotional Traits", "Physical Measures")),
     # Choose the number of factor you decided to retain
-    numericInput("k",label="Retain k factors:",value=8),
+    numericInput("k",label="Retain k factors:",value=3),
     # Choose the rotation of the factor pattern
     radioButtons("rotation","Choose the rotation of Factor Pattern",
                  list("V from SVD"="svd",
