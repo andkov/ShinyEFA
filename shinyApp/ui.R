@@ -15,8 +15,20 @@ shinyUI(pageWithSidebar(
   # to the caption in the textInput control are updated in the output
   # area immediately as you type
   sidebarPanel(
+    # Chose the dataset you would like to explore
     selectInput("dataset", "Choose a dataset:", 
-                choices = c("Cognitive Abilities", "Emotional Traits", "Physical Measures"))
+                choices = c("Cognitive Abilities", "Emotional Traits", "Physical Measures")),
+    # Choose the number of factor you decided to retain
+    numericInput("k",label="Retain k factors:",value=8),
+    # Choose the rotation of the factor pattern
+    radioButtons("rotation","Choose the rotation of Factor Pattern",
+                 list("V from SVD"="svd",
+                      "Unrotated"="none",
+                      "Quartimax"="quartimax", # 1953
+                      "Quartimin"="quartimin", # 1953
+                      "Varimax"="varimax", # 1958
+                      "Promax"="promax"  # 1964
+                      ))
   ),
   
   # Show the caption, a summary of the dataset and an HTML table with
@@ -25,10 +37,10 @@ shinyUI(pageWithSidebar(
     h3(textOutput("Description of the current tab")), 
     tabsetPanel(
       tabPanel("Variables"),
-      tabPanel("R", plotOutput("corrgram"),h5(textOutput("dd"))),
-      tabPanel("Eigens"),
-      tabPanel("RMSEA"),
-      tabPanel("Plot" ), 
+      tabPanel("R", plotOutput("corrgram"),h5(textOutput("dscr"))),
+      tabPanel("Eigens",plotOutput("eigens")),
+      tabPanel("RMSEA",plotOutput("RMSEA")),
+      tabPanel("Pattern",plotOutput("patternPlot") ), 
       tabPanel("Table"),
       selected="Variables")            
   )

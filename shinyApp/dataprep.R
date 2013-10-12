@@ -3,11 +3,12 @@ library(datasets)
 library(ggplot2) # load ggplot
 library(psych)
 data(Harman)
+
 # Harman.Holzinger: 9 x 9 correlation matrix of cognitive ability tests, N = 696.
 cognitive<-Harman.Holzinger
 n.cognitive<-696
 p.cognitive<-nrow(cognitive)
-colnames.cognitive<-c("Word Meaning",
+vars.cognitive<-c("Word Meaning",
                      "Sentence Completion",
                      "Odd Words",
                      "Mixed Arithmetic",
@@ -16,36 +17,48 @@ colnames.cognitive<-c("Word Meaning",
                      "Gloves",
                      "Boots",
                      "Hatchets")
-colnames(cognitive)<-colnames.cognitive
-rownames(cognitive)<-colnames.cognitive
-
-
+colnames(cognitive)<-vars.cognitive
+rownames(cognitive)<-vars.cognitive
 
 # Harman.Burt: a 8 x 8 correlation matrix of “emotional" items. N = 172
 emotional <-Harman.Burt
-# colnames.emotional<-c("Sociability",
-#                       "Sorrow",
-#                       "Tenderness",
-#                       "Joy ",
-#                       "Wonder",
-#                       "Disgust ",
-#                       "Anger",
-#                       "Fear")
-# colnames(emotional)<-colnames.emotional
-# rownames(emotional)<-colnames.emotional
+vars.emotional<-c("Sociability",
+                      "Sorrow",
+                      "Tenderness",
+                      "Joy ",
+                      "Wonder",
+                      "Disgust ",
+                      "Anger",
+                      "Fear")
+colnames(emotional)<-vars.emotional
+rownames(emotional)<-vars.emotional
 n.emotional<-172
 p.emotional<-nrow(emotional)
 # emotional matrix is not positive definity due to original typo
 # see explanations in the psych package documentation under Harman.Burt
 emotional["Tenderness","Sorrow"]<-.81
 emotional["Sorrow","Tenderness"]<-.81
-# colnames(emotional)<-c("v1","v2","v3","v4","v5","v6","v7","v8")
+
+# Harman.8: 8 x 8 correlation matrix of physical measures of 305 girls
 physical<-Harman.8
-rownames(physical)<-colnames(physical)
+vars.physical<-c("Height",
+                 "Arm span",
+                 "Length of forearm",
+                 "Length of lower leg",
+                 "Weight",
+                 "Bitrochanteric diameter",
+                 "Chest girth",
+                 "Chest width")
+vars.physycal.short<-colnames(Harman.8)
+colnames(physical)<-vars.physycal.short
+rownames(physical)<-vars.physycal.short
 n.physical<-305
 p.physical<-nrow(physical)
 
-rm(list=setdiff(ls(),c("cognitive","emotional", "physical")))
+rm(list=setdiff(ls(),c("cognitive","emotional", "physical",
+                       "vars.cognitive", "vars.emotional","vars.physical","vars.physycal.short",
+                       "n.cognitive","n.emotional","n.physical",
+                       "p.cognitive","p.emotional","p.physical")))
 
 
 
