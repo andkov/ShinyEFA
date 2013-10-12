@@ -6,12 +6,23 @@ library(psych)
 # k<-input$k
 # p<-p()
 
+R<-cognitive
+n.obs<-n.coginitive
+k<-5
+p<-p.cognitive
+
 # A <- factanal(covmat=R,n.obs=n.obs,factors=k,maxit=1000,rotation="none")
 # F<-A$loadings[1:p,]
 # F<-cbind(F,matrix(numeric(0),p,p-k))
 # colnames(F)<-paste0("F",1:ncol(R))
 
-
+A <- factanal(covmat=R,n.obs=n.obs,factors=k,maxit=1000,rotation="none")
+# input$dataset is not passing name of the dataset to facanal(), log:
+# Error in factanal(covmat = input$dataset, n.obs = n(), factors = input$k,:
+#'covmat' is of unknown type
+F<-A$loadings[1:p(),]
+F<-cbind(F,matrix(numeric(0),p(),p()-input$k))
+colnames(F)<-paste0("F",1:ncol(R))
 
 
 

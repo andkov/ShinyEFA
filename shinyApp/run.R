@@ -6,3 +6,4 @@ library(shiny)
 shiny::runApp('shinyApp')
 
 
+getwd()
