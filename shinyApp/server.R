@@ -93,7 +93,7 @@ chosenRotation <- reactive({
   })
 # Prints the plot of the pattern matrix
   output$patternPlot<-renderPlot(function(){
-    A <- factanal(covmat=datasetInput(),n.obs=n(),factors=input$k,maxit=1000,rotation="none")
+    A <- factanal(covmat=input$dataset,n.obs=n(),factors=input$k,maxit=1000,rotation="none")
     F<-A$loadings[1:p(),]
     F<-cbind(F,matrix(numeric(0),p(),p()-input$k))
     colnames(F)<-paste0("F",1:ncol(R))
