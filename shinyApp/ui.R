@@ -14,7 +14,7 @@ shinyUI(pageWithSidebar(
   # area immediately as you type
   sidebarPanel(
     selectInput("dataset", "Choose a dataset:", 
-                choices = c("Cognitive Abilities", "Emotional Traits"))
+                choices = c("Cognitive Abilities", "Emotional Traits", "Physical Measures"))
     
   
   ),
@@ -25,7 +25,7 @@ shinyUI(pageWithSidebar(
     h3(textOutput("Description of the current tab")), 
     tabsetPanel(
       tabPanel("Variables"),
-      tabPanel("R", plotOutput("corrgram"),textOutput("dd")),
+      tabPanel("R", plotOutput("corrgram"),h5(textOutput("dd"))),
       tabPanel("Eigens"),
       tabPanel("RMSEA"),
       tabPanel("Plot" ), 

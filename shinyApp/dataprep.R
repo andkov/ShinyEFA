@@ -40,8 +40,12 @@ p.emotional<-nrow(emotional)
 emotional["Tenderness","Sorrow"]<-.81
 emotional["Sorrow","Tenderness"]<-.81
 # colnames(emotional)<-c("v1","v2","v3","v4","v5","v6","v7","v8")
+physical<-Harman.8
+rownames(physical)<-colnames(physical)
+n.physical<-305
+p.physical<-nrow(physical)
 
-rm(list=setdiff(ls(),c("cognitive","emotional", "political")))
+rm(list=setdiff(ls(),c("cognitive","emotional", "physical")))
 
 
 
