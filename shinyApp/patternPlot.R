@@ -1,4 +1,4 @@
-
+require(ggplot2)
 
 # A <- factanal(covmat=R,n.obs=n.obs,factors=k,maxit=1000,rotation="none")
 # F<-A$loadings[1:p,]
