@@ -39,12 +39,10 @@ shinyUI(pageWithSidebar(
     h3(textOutput("Description of the current tab")), 
     tabsetPanel(
       tabPanel("Variables"),
-      tabPanel("R", plotOutput("corrgram"),h5(textOutput("dscr"))),
-      tabPanel("Eigens",plotOutput("eigens")),
-      tabPanel("RMSEA",plotOutput("RMSEA")),
-      tabPanel("Pattern",plotOutput("patternPlot") ), 
-#       tabPanel("Pattern",tableOutput("patternPlot")),
-#       tabPanel("Pattern",textOutput("patternPlot")),
+      tabPanel("R", plotOutput("corrgram",height="600px"),h5(textOutput("dscr"))),
+      tabPanel("Eigens",plotOutput("eigens",height="600px")),
+      tabPanel("RMSEA",plotOutput("RMSEA",height="600px")),
+      tabPanel("Pattern",plotOutput("patternPlot",width="80%",height="600px")), 
       tabPanel("Table",tableOutput("patternMatrix")),
       selected="Variables")            
   )
