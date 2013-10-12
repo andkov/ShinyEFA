@@ -43,6 +43,8 @@ shinyUI(pageWithSidebar(
       tabPanel("Eigens",plotOutput("eigens")),
       tabPanel("RMSEA",plotOutput("RMSEA")),
       tabPanel("Pattern",plotOutput("patternPlot") ), 
+#       tabPanel("Pattern",tableOutput("patternPlot")),
+#       tabPanel("Pattern",textOutput("patternPlot")),
       tabPanel("Table",tableOutput("patternMatrix")),
       selected="Variables")            
   )
