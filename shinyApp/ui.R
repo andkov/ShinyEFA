@@ -1,6 +1,8 @@
 # http://rstudio.github.io/shiny/tutorial/#reactivity - UI
 
 library(shiny)
+library(psych)
+library(corrgram)
 
 # Define UI for dataset viewer application
 shinyUI(pageWithSidebar(
@@ -15,8 +17,6 @@ shinyUI(pageWithSidebar(
   sidebarPanel(
     selectInput("dataset", "Choose a dataset:", 
                 choices = c("Cognitive Abilities", "Emotional Traits", "Physical Measures"))
-    
-  
   ),
   
   # Show the caption, a summary of the dataset and an HTML table with
