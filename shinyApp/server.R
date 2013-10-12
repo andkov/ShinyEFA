@@ -102,9 +102,9 @@ shinyServer( function(input, output) {
  # input$dataset is not passing name of the dataset to facanal(), log:
  # Error in factanal(covmat = input$dataset, n.obs = n(), factors = input$k,:
  #'covmat' is of unknown type
-    F<-A$loadings[1:p(),]
-    F<-cbind(F,matrix(numeric(0),p(),p()-input$k))
-    colnames(F)<-paste0("F",1:ncol(R))
+    FPM<-A$loadings[1:p(),] # FPM - Factor Pattern Matrix
+    FPM<-cbind(FPM,matrix(numeric(0),p(),p()-input$k))
+    colnames(FPM)<-paste0("F",1:ncol(R))
     source("patternPlot.R")
   })
 
