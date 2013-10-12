@@ -5,5 +5,3 @@ library(shiny)
 # setwd("D:/Users/Will/Documents/GitHub/ShinyEFA")
 shiny::runApp('shinyApp')
 
-
-getwd()

@@ -6,7 +6,7 @@ require(ggplot2)
 # colnames(F)<-paste0("F",1:ncol(R))
 
 # # Transforms dataset into a long format to be used in ggplot
-dsFORp <- reshape2::melt(FPM, id.vars=rownames(FPM))  ## id.vars declares MEASURED variables (as opposed to RESPONSE variable)
+dsFORp <- reshape2::melt(dsFORpWide, id.vars=rownames(dsFORpWide))  ## id.vars declares MEASURED variables (as opposed to RESPONSE variable)
 dsFORp <- plyr::rename(dsFORp, replace=c(Var1="Variable",Var2="Factor",value="Loading"))
 dsFORp$positive <- dsFORp$Loading >= 0 # is factor loading positive? color coded in ggplot
 dsFORp$Loading<-abs(as.numeric(dsFORp$Loading)) # Long form
