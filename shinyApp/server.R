@@ -95,8 +95,12 @@ shinyServer( function(input, output) {
     p()
   })
 # Prints the plot of the pattern matrix
+# Currently produces ERROR: Passing functions to 'renderPlot' is deprecated. Please use expressions instead. See ?renderPlot for more information.
   output$patternPlot<-renderPlot(function(){
     A <- factanal(covmat=input$dataset,n.obs=n(),factors=input$k,maxit=1000,rotation="none")
+ # input$dataset is not passing name of the dataset to facanal(), log:
+ # Error in factanal(covmat = input$dataset, n.obs = n(), factors = input$k,:
+ #'covmat' is of unknown type
     F<-A$loadings[1:p(),]
     F<-cbind(F,matrix(numeric(0),p(),p()-input$k))
     colnames(F)<-paste0("F",1:ncol(R))
