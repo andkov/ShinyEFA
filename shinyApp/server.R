@@ -1,5 +1,8 @@
-
-library(shiny)
+library(datasets)
+library(ggplot2) # load ggplot
+library(psych)
+library(plotrix)
+library(sem)
 
 # Loads three classic datasets from 'psych' package by William Revelle, http://cran.r-project.org/web/packages/psych/
 source("dataprep.R") # begins with rm(list=ls(all=TRUE))
@@ -56,16 +59,16 @@ shinyServer( function(input, output) {
     )    
   })
 # Creates dynamic object rotation that contains the name of chosen rotation
-chosenRotation <- reactive({
-  switch(EXPR=input$rotation,
-         "V from SVD"="svd",
-         "Unrotated"="none",
-         "Quartimax"="quartimax", # 1953
-         "Quartimin"="quartimin", # 1953
-         "Varimax"="varimax", # 1958
-         "Promax"="promax", # 1964
-  )    
-})
+  chosenRotation <- reactive({
+    switch(EXPR=input$rotation,
+           "V from SVD"="svd",
+           "Unrotated"="none",
+           "Quartimax"="quartimax", # 1953
+           "Quartimin"="quartimin", # 1953
+           "Varimax"="varimax", # 1958
+           "Promax"="promax", # 1964
+    )    
+  })
 
 
 ####        OUTPUT     ####
@@ -98,7 +101,7 @@ chosenRotation <- reactive({
     F<-cbind(F,matrix(numeric(0),p(),p()-input$k))
     colnames(F)<-paste0("F",1:ncol(R))
     source("patternPlot.R")
-})
+  })
 
 })
 

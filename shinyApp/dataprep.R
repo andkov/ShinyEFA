@@ -2,6 +2,9 @@ rm(list=ls(all=TRUE))
 library(datasets)
 library(ggplot2) # load ggplot
 library(psych)
+library(plotrix)
+library(sem)
+
 data(Harman)
 
 # Harman.Holzinger: 9 x 9 correlation matrix of cognitive ability tests, N = 696.

@@ -3,6 +3,8 @@
 library(shiny)
 library(psych)
 library(corrgram)
+library(plotrix)
+library(sem)
 
 # Define UI for dataset viewer application
 shinyUI(pageWithSidebar(
