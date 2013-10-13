@@ -136,12 +136,12 @@ shinyServer( function(input, output) {
     n.obs <- n()  # choice of the dataset defines  n - its sample size
     p <- p() # the choice of dataset defines p - its number of variables
     # procedures
-    A <- factanal(covmat=R, n.obs=n.obs, factors=k, maxit=1000, rotation="none")
+    A <- stats::factanal(covmat=R, n.obs=n.obs, factors=k, maxit=1000, rotation="none")
     FPM <- A$loadings[1:p, ] # FPM - Factor Pattern Matrix
-    FPM <- cbind(FPM,matrix(numeric(0), p, p-k)) # appends empty columns to have p columns
-    colnames(FPM) <- paste0("F",1:p) # renames for better presentation in tables and graphs
-    A <- factanal(covmat=R, n.obs=n.obs, factors=k, maxit=1000, rotation="none")
-    F <- A$loadings[1:p,]
+    FPM <- cbind(FPM, matrix(numeric(0), p, p-k)) # appends empty columns to have p columns
+    colnames(FPM) <- paste0("F", 1:p) # renames for better presentation in tables and graphs
+    A <- stats::factanal(covmat=R, n.obs=n.obs, factors=k, maxit=1000, rotation="none")
+    F <- A$loadings[1:p, ]
     F <- cbind(F, matrix(numeric(0), p, p-k))
     colnames(F) <- paste0("F", 1:ncol(R))
     # output
@@ -175,7 +175,7 @@ output$contents <- renderTable({
   read.csv(inFile$datapath, header=input$header, sep=input$sep)
 }) # Displaces the data that was uploaded
 
- output$patternMatrix<-renderTable({
+ output$patternMatrix <- renderTable({
     # Reactive code
     R <- datasetInput() # the choice of the dataset in ui.R
     k <- input$k # the choice of the number of factors to retain from ui.R
@@ -186,24 +186,24 @@ output$contents <- renderTable({
 #     n.obs<-n.cognitive
     ## IF --
     if( input$rotation=="svd" ) {
-      V <- svd(R)$v
+      V <- base::svd(R)$v
       FPM <- V[, 1:k] # FPM - Factor Pattern Matrix
       FPM <- cbind(FPM, matrix(numeric(0), p, p-k)) # appends empty columns to have p columns
       rownames(FPM) <- rownames(datasetInput())
-      colnames(FPM) <- paste0("V", 1:p)
+      colnames(FPM) <- paste0("V", 1:p) #Andrey, should this be 'F' instead of 'V'?
       FPM # THE OUTPUT
     } 
     else if( input$rotation=="promax" ) { 
-      A <- factanal(factors = k, covmat=R, 
+      A <- stats::factanal(factors = k, covmat=R, 
                    rotation="none", control=list(rotate=list(normalize=TRUE)))
-      A <- GPromax(A$loadings, pow=3)
+      A <- GPArotation::GPromax(A$loadings, pow=3)
       FPM <- A$Lh # FPM - Factor Pattern Matrix
       FPM <- cbind(FPM, matrix(numeric(0), p, p-k)) # appends empty columns to have p columns
       colnames(FPM) <- paste0("F", 1:p) # renames for better presentation in tables and graphs
       FPM # THE OUTPUT
     } 
     else if( input$rotation=="none" ) { 
-      A <- factanal(factors = k, covmat=R, 
+      A <- stats::factanal(factors = k, covmat=R, 
                    rotation="none", control=list(rotate=list(normalize=TRUE)))
       FPM <- A
       FPM <- FPM$loadings # FPM - Factor Pattern Matrix
@@ -212,22 +212,22 @@ output$contents <- renderTable({
       FPM  # THE OUTPUT
     } 
     else if( input$rotation %in% c("cfT","cfQ") ) { 
-      A<- factanal(factors = k, covmat=R, 
+      A <- stats::factanal(factors = k, covmat=R, 
                    rotation="none", control=list(rotate=list(normalize=TRUE)))
       L <- A$loadings
       FPM <- eval(parse(text=
                         paste0(rotationInput(),"(L,Tmat=diag(ncol(L)),kappa=input$kappa,normalize=FALSE, eps=1e-5, maxit=1000)")))
       FPM <- FPM$loadings # FPM - Factor Pattern Matrix
-      FPM <- cbind(FPM,matrix(numeric(0),p,p-k)) # appends empty columns to have p columns
-      colnames(FPM) <- paste0("F",1:p) # renames for better presentation in tables and graphs
+      FPM <- cbind(FPM,matrix(numeric(0), p, p-k)) # appends empty columns to have p columns
+      colnames(FPM) <- paste0("F", 1:p) # renames for better presentation in tables and graphs
       FPM  # THE OUTPUT
     } 
     else if( input$rotation==rotationInput() ) { 
-      A <- factanal(factors = k, covmat=R, 
+      A <- stats::factanal(factors = k, covmat=R, 
                    rotation="none", control=list(rotate=list(normalize=TRUE)))
       L <- A$loadings
       FPM <- eval(parse(text=
-        paste0(rotationInput(),"(L,Tmat=diag(ncol(L)),normalize=FALSE, eps=1e-5, maxit=1000)")))
+        paste0(rotationInput(),"(L, Tmat=diag(ncol(L)), normalize=FALSE, eps=1e-5, maxit=1000)")))
       FPM <- FPM$loadings # FPM - Factor Pattern Matrix
       FPM <- cbind(FPM, matrix(numeric(0), p, p-k)) # appends empty columns to have p columns
       colnames(FPM) <- paste0("F", 1:p) # renames for better presentation in tables and graphs

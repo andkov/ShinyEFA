@@ -22,7 +22,7 @@ shinyUI(pageWithSidebar(
                             "Physical Measures",
                             "Uploaded Data")),
     # Choose the number of factor you decided to retain
-    numericInput("k",label="Retain k factors:",value=3),
+    numericInput("k", label="Retain k factors:", value=3),
     
     # Choose the rotation of the factor pattern
     radioButtons("rotation","Choose the rotation of Factor Pattern",
@@ -37,7 +37,7 @@ shinyUI(pageWithSidebar(
     
     # Select the value of kappa for the CF rotation
     sliderInput("kappa","Value of kappa for Crawford-Ferguson:",
-                min=0,max=1,value=0,step=.05),
+                min=0, max=1, value=0, step=.05),
     br(),
     # INput your own file
     fileInput('file1', 'Upload your own CSV file',
@@ -55,13 +55,12 @@ shinyUI(pageWithSidebar(
   mainPanel(
     h3(textOutput("dlkafjd lkdjf a")), 
     tabsetPanel(
-      tabPanel("Variables",tableOutput("contents")),
-      tabPanel("R", plotOutput("corrgram",height="600px"),h5(textOutput("dscr.data"))),
-      tabPanel("Eigens",plotOutput("eigens",height="600px")),
-      tabPanel("RMSEA",plotOutput("RMSEA",height="600px")),
-      tabPanel("Pattern",plotOutput("patternPlot",width="80%",height="600px")), 
-      tabPanel("Table",tableOutput("patternMatrix")),
+      tabPanel("Variables", tableOutput("contents")),
+      tabPanel("R", plotOutput("corrgram", height="600px"), h5(textOutput("dscr.data"))),
+      tabPanel("Eigens", plotOutput("eigens", height="600px")),
+      tabPanel("RMSEA", plotOutput("RMSEA", height="600px")),
+      tabPanel("Pattern", plotOutput("patternPlot", width="80%", height="600px")), 
+      tabPanel("Table", tableOutput("patternMatrix")),
       selected="Variables")          
-            )
-  
+  )
 ))
