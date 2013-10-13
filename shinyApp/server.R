@@ -34,7 +34,7 @@ shinyServer( function(input, output) {
            "Physical Measures"=dscr.physical
     )    
   })
-# Creates the reactive object contaning the strings of dataset names to be used later
+  # Creates the reactive object contaning the strings of dataset names to be used later
   dsTag <- reactive({
     switch(EXPR=input$dataset,
            "Cognitive Abilities"="cognitive",
@@ -58,7 +58,6 @@ shinyServer( function(input, output) {
            "Physical Measures"=n.physical
     )    
   })
-
 # Creates dynamic object rotation that contains the name of chosen rotation
   chosenRotation <- reactive({
     switch(EXPR=input$rotation,
@@ -73,33 +72,25 @@ shinyServer( function(input, output) {
 
 
 ####        OUTPUT     ####
-
-# Variable Names
-  output$varNames<- renderTable({
-    x<-datasetInput()
-    colnames(x)<-paste0("v",1:p()) 
-    print(x)
-  })
-
-#  data description text object
+# attaches data description to the bottom of tabPanel("R") in mainPanel
   output$dscr <- renderPrint ({
     datasetDescription() 
   })
-# correlelogram of the selected dataset
+# produces correlelogram of the selected dataset
   output$corrgram <- renderPlot({
     corrgram(datasetInput(),upper.panel=panel.conf, lower.panel=panel.pie,type="cor",order=TRUE)
   }) 
-# eigen plot
+# produces eigen plots
   output$eigens<-renderPlot({
     R<-datasetInput()
     Scree.Plot(R)
   })
-# RMSEA plot
+# produces RMSEA plots
   output$RMSEA<-renderPlot({
     R<-datasetInput()
     FA.Stats(R,n.factors=1:4,n.obs=get(paste0("n.",dsTag())), RMSEA.cutoff=0.05)
   })
-# p (number of variables) of chosen dataset
+# selectes the number of variables in the chosen dataset
   output$p<-renderText({ 
     p()
   })
