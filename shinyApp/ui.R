@@ -56,14 +56,14 @@ shinyUI(pageWithSidebar(
       h3(textOutput("dlkafjd lkdjf a")), 
       tabsetPanel(
         tabPanel("Data", tableOutput("contents")),
-        tabPanel("R", plotOutput("corrgram", height="600px"), h5(textOutput("dscr.data"))),
+        tabPanel("Correlations", plotOutput("corrgram", height="600px"), h5(textOutput("dscr.data"))),
         tabPanel("Eigens", plotOutput("eigens", height="600px")),
         tabPanel("RMSEA", plotOutput("RMSEA", height="600px")),
-        tabPanel("Pattern", plotOutput("patternPlot", width="80%", height="600px")), 
+        tabPanel("Patterns", plotOutput("patternPlot", width="80%", height="600px")), 
         tabPanel("Table", tableOutput("patternMatrix")),
-        selected="Variables"
-      )#, #Close tabsetPanel          
-#       imageOutput("PyramidImage", width="80%", height="600px")
+        selected="Data"
+      ),# #Close tabsetPanel          
+      imageOutput("PyramidImage", width="80%", height="600px")
     ) #Close mainPanel  
   ) #Close pageWithSidebar
 ) #Close shinyUI
