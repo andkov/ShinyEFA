@@ -16,18 +16,27 @@ shinyUI(pageWithSidebar(
   sidebarPanel(
     # Chose the dataset you would like to explore
     selectInput("dataset", "Choose a dataset:", 
-                choices = c("Cognitive Abilities", "Emotional Traits", "Physical Measures")),
+                choices = c("Cognitive Abilities", 
+                            "Emotional Traits", 
+                            "Physical Measures")),
+    
     # Choose the number of factor you decided to retain
     numericInput("k",label="Retain k factors:",value=3),
+    
     # Choose the rotation of the factor pattern
     radioButtons("rotation","Choose the rotation of Factor Pattern",
                  list("SVD eigenvectors"="svd",
                       "Unrotated"="none",
-                      "Quartimax"="quartimax", # 1953
-                      "Quartimin"="quartimin", # 1953
-                      "Varimax"="varimax", # 1958
-                      "Promax"="promax"  # 1964
-                      ))
+                      "Varimax ORTH"="Varimax", 
+                      "Promax OBLQ"="promax",
+                      "Bifactor ORTH"="bifactorT",
+                      "Bifactor OBLQ"="bifactorQ",
+                      "Crawford-Ferguson ORTH"="cfT",
+                      "Crawford-Ferguson OBLQ"="cfQ")),
+    
+    # Select the value of kappa for the CF rotation
+    sliderInput("kappa","Value of kappa for Crawford-Ferguson:",
+                min=0,max=1,value=0,step=.05)
               ),
   
   # MAIN PANEL #.

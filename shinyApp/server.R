@@ -1,8 +1,11 @@
 library(datasets)
 library(ggplot2) # load ggplot
+library(GPArotation)
 library(psych)
 library(plotrix)
 library(sem)
+library(stats)
+
 
 # Loads three classic datasets from 'psych' package by William Revelle, http://cran.r-project.org/web/packages/psych/
 source("dataprep.R") # begins with rm(list=ls(all=TRUE))
@@ -58,8 +61,6 @@ dsTag <- reactive({
 #          "Promax"="promax"  # 1964
 #   )    
 # })
-
-
 # Number of observed variables
   p <- reactive({
     switch(EXPR=input$dataset,
@@ -77,17 +78,18 @@ dsTag <- reactive({
     )    
   })
 # Rotation
-  inputRotation <- reactive({
+  rotationInput <- reactive({
     switch(EXPR=input$rotation,
-           "V from SVD"="svd",
-           "Unrotated"="none",
-           "Quartimax"="quartimax", # 1953
-           "Quartimin"="quartimin", # 1953
-           "Varimax"="varimax", # 1958
-           "Promax"="promax", # 1964
+           svd="svd",
+           none="none",
+           Varimax="Varimax", # 1958
+           promax="promax",
+           bifactorT="bifactorT",
+           bifactorQ="bifactorQ",
+           cfT="cfT",
+           cfQ="cfQ"
     )    
   })
-
 
 ####        OUTPUT     ####
 # some description
@@ -115,7 +117,7 @@ dsTag <- reactive({
 # produces RMSEA plots
   output$RMSEA<-renderPlot({
     R<-datasetInput()
-    FA.Stats(R,n.factors=1:4,n.obs=get(paste0("n.",dsTag())), RMSEA.cutoff=0.05)
+    FA.Stats(R,n.factors=1:input$k,n.obs=get(paste0("n.",dsTag())), RMSEA.cutoff=0.05)
   })
 # selectes the number of variables in the chosen dataset
   output$p<-renderText({ 
@@ -164,14 +166,77 @@ dsTag <- reactive({
     k<-input$k # the choice of the number of factors to retain from ui.R
     n.obs<-n()  # choice of the dataset defines  n - its sample size
     p<-p() # the choice of dataset defines p - its number of variables
-    # procedures
-    A <- factanal(covmat=R,n.obs=n.obs,factors=k,maxit=1000,rotation="none")
-      FPM<-A$loadings[1:p,] # FPM - Factor Pattern Matrix
+    
+#     k<-4
+#     n.obs<-n.cognitive
+    ## IF --
+    if(input$rotation=="svd"){
+      V<-svd(R)$v
+      FPM<-V[,1:k] # FPM - Factor Pattern Matrix
+      FPM<-cbind(FPM,matrix(numeric(0),p,p-k)) # appends empty columns to have p columns
+      rownames(FPM)<-rownames(datasetInput())
+      colnames(FPM)<-paste0("V",1:p)
+      FPM # THE OUTPUT
+    } else if(input$rotation=="promax"){ 
+      A<- factanal(factors = k, covmat=R, 
+                   rotation="none", control=list(rotate=list(normalize=TRUE)))
+      A<- GPromax(A$loadings,pow=3)
+      FPM<-A$Lh # FPM - Factor Pattern Matrix
       FPM<-cbind(FPM,matrix(numeric(0),p,p-k)) # appends empty columns to have p columns
       colnames(FPM)<-paste0("F",1:p) # renames for better presentation in tables and graphs
-    ##  output:
-    FPM  
+      FPM # THE OUTPUT
+    }else if(input$rotation=="none"){ 
+      A<- factanal(factors = k, covmat=R, 
+                   rotation="none", control=list(rotate=list(normalize=TRUE)))
+      FPM<-A
+      FPM<-FPM$loadings # FPM - Factor Pattern Matrix
+      FPM<-cbind(FPM,matrix(numeric(0),p,p-k)) # appends empty columns to have p columns
+      colnames(FPM)<-paste0("F",1:p) # renames for better presentation in tables and graphs
+      FPM  # THE OUTPUT
+    }
+    else if(input$rotation %in% c("cfT","cfQ")){ 
+      A<- factanal(factors = k, covmat=R, 
+                   rotation="none", control=list(rotate=list(normalize=TRUE)))
+      L<-A$loadings
+      FPM<-eval(parse(text=
+                        paste0(rotationInput(),"(L,Tmat=diag(ncol(L)),kappa=input$kappa,normalize=FALSE, eps=1e-5, maxit=1000)")))
+      FPM<-FPM$loadings # FPM - Factor Pattern Matrix
+      FPM<-cbind(FPM,matrix(numeric(0),p,p-k)) # appends empty columns to have p columns
+      colnames(FPM)<-paste0("F",1:p) # renames for better presentation in tables and graphs
+      FPM  # THE OUTPUT
+    }
+    else if(input$rotation==rotationInput() ){ 
+      A<- factanal(factors = k, covmat=R, 
+                   rotation="none", control=list(rotate=list(normalize=TRUE)))
+      L<-A$loadings
+      FPM<-eval(parse(text=
+      paste0(rotationInput(),"(L,Tmat=diag(ncol(L)),normalize=FALSE, eps=1e-5, maxit=1000)")))
+      FPM<-FPM$loadings # FPM - Factor Pattern Matrix
+      FPM<-cbind(FPM,matrix(numeric(0),p,p-k)) # appends empty columns to have p columns
+      colnames(FPM)<-paste0("F",1:p) # renames for better presentation in tables and graphs
+      FPM  # THE OUTPUT
+    }
+#     else if(input$rotation=="varimax"{ 
+#       A<- factanal(factors = k, covmat=R, 
+#                   rotation=rotationInput(),kappa=0, control=list(rotate=list(normalize=TRUE)))
+#       L<-A$loadings
+#       Varimax(L, Tmat=diag(ncol(L)),                   normalize=FALSE, eps=1e-5, maxit=1000)
+#       FPM<-A$loadings # FPM - Factor Pattern Matrix
+#       FPM<-cbind(FPM,matrix(numeric(0),p,p-k)) # appends empty columns to have p columns
+#       colnames(FPM)<-paste0("F",1:p) # renames for better presentation in tables and graphs
+#       FPM  # THE OUTPUT
+#     }
+
+    ##  -- IF end 
+    # procedures
+    
+#       FPM<-A$loadings[1:p,] # FPM - Factor Pattern Matrix
+#       FPM<-cbind(FPM,matrix(numeric(0),p,p-k)) # appends empty columns to have p columns
+#       colnames(FPM)<-paste0("F",1:p) # renames for better presentation in tables and graphs
+
   })# FPM table (Factor Pattern Matrix)
 
 })
+
+
 
