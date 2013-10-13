@@ -5,14 +5,12 @@ library(psych)
 library(plotrix)
 library(sem)
 library(stats)
-library(GPArotation)
-
 
 # Loads three classic datasets from 'psych' package by William Revelle, http://cran.r-project.org/web/packages/psych/
 source("dataprep.R") # begins with rm(list=ls(all=TRUE))
 # loads custom funtions by James S. Steier. Visit www.statpower.net for description and download
-source(file.path(getwd(), "sourced","Steiger R library functions.txt"))
-source(file.path(getwd(), "sourced","AdvancedFactorFunctions_CF.R"))
+# source(file.path(getwd(), "sourced", "Steiger R library functions.txt"))
+# source(file.path(getwd(), "sourced", "AdvancedFactorFunctions_CF.R"))
 
 # Description of the three datasets from the "psych" package documentation, http://cran.r-project.org/web/packages/psych/psych.pdf
 dscr.cognitive <- "The nine psychological variables from Harman (1967, p 244) are taken from unpublished class notes of K.J. Holzinger with 696 participants." 
@@ -164,16 +162,16 @@ shinyServer( function(input, output) {
     print(pp)
   }) # FPM plot (Factor Pattern Matrix)
 
-output$contents <- renderTable({
-  # input$file1 will be NULL initially. After the user selects and uploads a 
-  # file, it will be a data frame with 'name', 'size', 'type', and 'datapath' 
-  # columns. The 'datapath' column will contain the local filenames where the 
-  # data can be found.
-  inFile <- input$file1 #use anywhare in server.R
-  if( is.null(inFile) )
-    return(NULL)
-  read.csv(inFile$datapath, header=input$header, sep=input$sep)
-}) # Displaces the data that was uploaded
+  output$contents <- renderTable({
+    # input$file1 will be NULL initially. After the user selects and uploads a 
+    # file, it will be a data frame with 'name', 'size', 'type', and 'datapath' 
+    # columns. The 'datapath' column will contain the local filenames where the 
+    # data can be found.
+    inFile <- input$file1 #use anywhare in server.R
+    if( is.null(inFile) )
+      return(NULL)
+    read.csv(inFile$datapath, header=input$header, sep=input$sep)
+  }) # Displaces the data that was uploaded
 
  output$patternMatrix <- renderTable({
     # Reactive code
@@ -196,8 +194,9 @@ output$contents <- renderTable({
     else if( input$rotation=="promax" ) { 
       A <- stats::factanal(factors = k, covmat=R, 
                    rotation="none", control=list(rotate=list(normalize=TRUE)))
-      A <- GPArotation::GPromax(A$loadings, pow=3)
-      FPM <- A$Lh # FPM - Factor Pattern Matrix
+      FPM <- promax(A, pow)$loadings
+#       A <- GPromax(A$loadings, pow=3)
+#       FPM <- A$Lh # FPM - Factor Pattern Matrix
       FPM <- cbind(FPM, matrix(numeric(0), p, p-k)) # appends empty columns to have p columns
       colnames(FPM) <- paste0("F", 1:p) # renames for better presentation in tables and graphs
       FPM # THE OUTPUT
