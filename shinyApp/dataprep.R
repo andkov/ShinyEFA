@@ -1,4 +1,4 @@
-rm(list=ls(all=TRUE))
+
 library(datasets)
 library(ggplot2) # load ggplot
 library(psych)
@@ -53,14 +53,13 @@ vars.physical <- c("Height",
                  "Bitrochanteric diameter",
                  "Chest girth",
                  "Chest width")
-vars.physycal.short <- colnames(Harman.8)
-colnames(physical) <- vars.physycal.short
-rownames(physical) <- vars.physycal.short
+vars.physycal <- colnames(Harman.8)
+colnames(physical) <- vars.physycal
+rownames(physical) <- vars.physycal
 n.physical <- 305
 p.physical <- nrow(physical)
 
 rm(list=setdiff(ls(), c("cognitive", "emotional", "physical",
                        "vars.cognitive", "vars.emotional","vars.physical",
-                       "vars.physycal.short",
                        "n.cognitive", "n.emotional", "n.physical",
                        "p.cognitive", "p.emotional", "p.physical")))

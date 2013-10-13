@@ -55,7 +55,7 @@ shinyUI(pageWithSidebar(
   mainPanel(
     h3(textOutput("dlkafjd lkdjf a")), 
     tabsetPanel(
-      tabPanel("Variables", tableOutput("contents")),
+      tabPanel("Data", tableOutput("contents")),
       tabPanel("R", plotOutput("corrgram", height="600px"), h5(textOutput("dscr.data"))),
       tabPanel("Eigens", plotOutput("eigens", height="600px")),
       tabPanel("RMSEA", plotOutput("RMSEA", height="600px")),
