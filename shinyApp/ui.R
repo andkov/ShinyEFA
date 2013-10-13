@@ -55,12 +55,12 @@ shinyUI(pageWithSidebar(
     mainPanel(
       h3(textOutput("dlkafjd lkdjf a")), 
       tabsetPanel(
-        tabPanel("Data", tableOutput("contents")),
-        tabPanel("Correlations", plotOutput("corrgram", height="600px"), h5(textOutput("dscr.data"))),
-        tabPanel("Eigens", plotOutput("eigens", height="600px")),
-        tabPanel("RMSEA", plotOutput("RMSEA", height="600px")),
-        tabPanel("Patterns", plotOutput("patternPlot", width="80%", height="600px")), 
-        tabPanel("Table", tableOutput("patternMatrix")),
+        tabPanel("Data",id="tabcur", tableOutput("contents")),
+        tabPanel("Correlations",id="tabcur", plotOutput("corrgram", height="600px"), h5(textOutput("dscr.data"))),
+        tabPanel("Eigens",id="tabcur", plotOutput("eigens", height="600px")),
+        tabPanel("RMSEA",id="tabcur", plotOutput("RMSEA", height="600px")),
+        tabPanel("Patterns",id="tabcur", plotOutput("patternPlot", width="80%", height="600px")), 
+        tabPanel("Table",id="tabcur", tableOutput("patternMatrix")),
         selected="Data"
       ),# #Close tabsetPanel          
       imageOutput("PyramidImage", width="80%", height="600px")

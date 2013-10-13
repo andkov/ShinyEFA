@@ -59,7 +59,7 @@ rownames(physical) <- vars.physycal
 n.physical <- 305
 p.physical <- nrow(physical)
 
-rm(Harman.8)
+
 
 # rm(list=setdiff(ls(), c("cognitive", "emotional", "physical",
 #                        "vars.cognitive", "vars.emotional","vars.physical",

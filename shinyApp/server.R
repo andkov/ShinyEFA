@@ -110,16 +110,13 @@ shinyServer( function(input, output) {
     )    
   })
 # # What tabset is it?
-# currentTabset <- reactive({
-#     switch(EXPR=)
-# if input$Data pyr.A
-# if input$Correlations then pyr.R
-# if input$Eigens
-# RMSEA
-# Patterns
-# })
+ currentTabset <- reactive({
+switch(EXPR=input$tabcur,
+       "Data"=pyr.data,
+       "Correlations"=pyr.correlation)
+})
 
-####        OUTPUT     ####
+####        OUTPUT ####
 # some description
   output$somedscr <- renderPrint ({
     print("Some Description")
@@ -154,7 +151,7 @@ shinyServer( function(input, output) {
 
 # Pyramid Image
  output$PyramidImage<-renderImage({
-   get(file.path(getwd(),"images/FApyramid_03.png"))
+   src(file.path(getwd(),"images/FApyramid_03.png"))
  })
 
 
@@ -264,5 +261,7 @@ shinyServer( function(input, output) {
       FPM  # THE OUTPUT
     }
 
+  
   })# FPM table (Factor Pattern Matrix)
-})
+}) # end of ShinyServer
+#### end of OUTPUT
