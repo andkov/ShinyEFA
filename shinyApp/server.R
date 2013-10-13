@@ -11,11 +11,11 @@ library(GPArotation)
 # Loads three classic datasets from 'psych' package by William Revelle, http://cran.r-project.org/web/packages/psych/
 source("dataprep.R") # begins with rm(list=ls(all=TRUE))
 # loads custom funtions by James S. Steier. Visit www.statpower.net for description and download
-source(file.path(getwd(),"sourced","Steiger R library functions.txt"))
-source(file.path(getwd(),"sourced","AdvancedFactorFunctions_CF.R"))
+source(file.path(getwd(), "sourced","Steiger R library functions.txt"))
+source(file.path(getwd(), "sourced","AdvancedFactorFunctions_CF.R"))
 
 # Description of the three datasets from the "psych" package documentation, http://cran.r-project.org/web/packages/psych/psych.pdf
-dscr.cognitive<- "The nine psychological variables from Harman (1967, p 244) are taken from unpublished class notes of K.J. Holzinger with 696 participants." 
+dscr.cognitive <- "The nine psychological variables from Harman (1967, p 244) are taken from unpublished class notes of K.J. Holzinger with 696 participants." 
 dscr.emotional <- "Eight emotional variables are taken from Harman (1967, p 164) who in turn adapted them from Burt (1939). They are said be from 172 normal children aged nine to twelve. As pointed out by Jan DeLeeuw, the Burt data set is a subset of 8 variables from the original 11 reported by Burt in 1915. That matrix has the same problem."
 dscr.physical <- "The Eight Physical Variables problem is taken from Harman (1976) and represents the correlations between eight physical variables for 305 girls. The two correlated clusters represent four measures of lankiness and then four measures of stockiness. The original data were selected from 17 variables reported in an unpublished dissertation by Mullen (1939)."
 
@@ -27,14 +27,14 @@ dscr.physical <- "The Eight Physical Variables problem is taken from Harman (197
 shinyServer( function(input, output) {
 ####        INPUT       ####
 # Creates the reactive object contaning the strings of dataset names to be used later
-dsTag <- reactive({
-  switch(EXPR=input$dataset,
-         "Cognitive Abilities"="cognitive",
-         "Emotional Traits"="emotional",
-         "Physical Measures"="physical",
-         "Uploaded Data"="uploaded"
-  )    
-})
+  dsTag <- reactive({
+    switch(EXPR=input$dataset,
+           "Cognitive Abilities"="cognitive",
+           "Emotional Traits"="emotional",
+           "Physical Measures"="physical",
+           "Uploaded Data"="uploaded"
+    )    
+  })
 # Dataset
   datasetInput <- reactive({
     switch(EXPR=input$dataset,
@@ -107,61 +107,60 @@ dsTag <- reactive({
     datasetDescription() 
   })
 # tabset description
-  output$dscr.tabset<-renderPrint({
+  output$dscr.tabset <- renderPrint({
     print(c("Description of the current tabset"))
   })
 #  correlelogram 
   output$corrgram <- renderPlot({
-    
-  corrgram(datasetInput(),upper.panel=panel.conf, lower.panel=panel.shade,type="cor",order=TRUE)
+    corrgram(datasetInput(), upper.panel=panel.conf, lower.panel=panel.shade, type="cor", order=TRUE)
   }) 
 # eigen plots
-  output$eigens<-renderPlot({
-    R<-datasetInput()
+  output$eigens <- renderPlot({
+    R <- datasetInput()
     Scree.Plot(R)
   })
 # produces RMSEA plots
-  output$RMSEA<-renderPlot({
-    R<-datasetInput()
-    FA.Stats(R,n.factors=1:input$k,n.obs=get(paste0("n.",dsTag())), RMSEA.cutoff=0.05)
+  output$RMSEA <- renderPlot({
+    R <- datasetInput()
+    FA.Stats(R, n.factors=1:input$k, n.obs=get(paste0("n.", dsTag())), RMSEA.cutoff=0.05)
   })
 # selectes the number of variables in the chosen dataset
-  output$p<-renderText({ 
+  output$p <- renderText({ 
     p()
   })
 
- output$patternPlot<-renderPlot({  
+ output$patternPlot <- renderPlot({  
     # Reactive code
-    R<-datasetInput() # the choice of the dataset in ui.R
-    k<-input$k # the choice of the number of factors to retain from ui.R
-    n.obs<-n()  # choice of the dataset defines  n - its sample size
-    p<-p() # the choice of dataset defines p - its number of variables
+    R <- datasetInput() # the choice of the dataset in ui.R
+    k <- input$k # the choice of the number of factors to retain from ui.R
+    n.obs <- n()  # choice of the dataset defines  n - its sample size
+    p <- p() # the choice of dataset defines p - its number of variables
     # procedures
-    A <- factanal(covmat=R,n.obs=n.obs,factors=k,maxit=1000,rotation="none")
-    FPM<-A$loadings[1:p,] # FPM - Factor Pattern Matrix
-    FPM<-cbind(FPM,matrix(numeric(0),p,p-k)) # appends empty columns to have p columns
-    colnames(FPM)<-paste0("F",1:p) # renames for better presentation in tables and graphs
-      A <- factanal(covmat=R,n.obs=n.obs,factors=k,maxit=1000,rotation="none")
-      F<-A$loadings[1:p,]
-      F<-cbind(F,matrix(numeric(0),p,p-k))
-      colnames(F)<-paste0("F",1:ncol(R))
+    A <- factanal(covmat=R, n.obs=n.obs, factors=k, maxit=1000, rotation="none")
+    FPM <- A$loadings[1:p, ] # FPM - Factor Pattern Matrix
+    FPM <- cbind(FPM,matrix(numeric(0), p, p-k)) # appends empty columns to have p columns
+    colnames(FPM) <- paste0("F",1:p) # renames for better presentation in tables and graphs
+    A <- factanal(covmat=R, n.obs=n.obs, factors=k, maxit=1000, rotation="none")
+    F <- A$loadings[1:p,]
+    F <- cbind(F, matrix(numeric(0), p, p-k))
+    colnames(F) <- paste0("F", 1:ncol(R))
     # output
     # Data prep for ggplot
     dsFORp <- reshape2::melt(FPM, id.vars=rownames(FPM))  ## id.vars declares MEASURED variables (as opposed to RESPONSE variable)
-    dsFORp <- plyr::rename(dsFORp, replace=c(Var1="Variable",Var2="Factor",value="Loading"))
+    dsFORp <- plyr::rename(dsFORp, replace=c(Var1="Variable", Var2="Factor", value="Loading"))
     dsFORp$positive <- dsFORp$Loading >= 0 # is factor loading positive? color coded in ggplot
-    dsFORp$Loading<-abs(as.numeric(dsFORp$Loading)) # Long form
+    dsFORp$Loading <- abs(as.numeric(dsFORp$Loading)) # Long form
     # The colors for negative and positve values of factor loadings for ggplot
-    colors<- c("darksalmon" ,"lightskyblue")
-    title<-"Basic Title"
+    colors <- c("darksalmon" ,"lightskyblue")
+    title <- "Basic Title"
     # Graph definition
-    pp<-ggplot(dsFORp, aes(x=Factor, y=Loading, fill=positive))+
-      ggtitle(title)+ 
-      geom_bar(stat="identity")+
-      scale_fill_manual(values=colors)+
-      scale_y_continuous(limits=c(0,1))+
-      theme(axis.text.x =element_text(angle=0,hjust=.5))+
-      facet_grid(Variable~.)
+    pp <- ggplot(dsFORp, aes(x=Factor, y=Loading, fill=positive)) +
+      ggtitle(title) + 
+      geom_bar(stat="identity") +
+      scale_fill_manual(values=colors) +
+      scale_y_continuous(limits=c(0,1)) +
+      theme(axis.text.x=element_text(angle=0, hjust=.5)) +
+      facet_grid(Variable ~ .)
     print(pp)
   }) # FPM plot (Factor Pattern Matrix)
 
@@ -171,71 +170,69 @@ output$contents <- renderTable({
   # columns. The 'datapath' column will contain the local filenames where the 
   # data can be found.
   inFile <- input$file1 #use anywhare in server.R
-  if (is.null(inFile))
+  if( is.null(inFile) )
     return(NULL)
   read.csv(inFile$datapath, header=input$header, sep=input$sep)
 }) # Displaces the data that was uploaded
 
  output$patternMatrix<-renderTable({
     # Reactive code
-    R<-datasetInput() # the choice of the dataset in ui.R
-    k<-input$k # the choice of the number of factors to retain from ui.R
-    n.obs<-n()  # choice of the dataset defines  n - its sample size
-    p<-p() # the choice of dataset defines p - its number of variables
+    R <- datasetInput() # the choice of the dataset in ui.R
+    k <- input$k # the choice of the number of factors to retain from ui.R
+    n.obs <- n()  # choice of the dataset defines  n - its sample size
+    p <- p() # the choice of dataset defines p - its number of variables
     
 #     k<-4
 #     n.obs<-n.cognitive
     ## IF --
-    if(input$rotation=="svd"){
-      V<-svd(R)$v
-      FPM<-V[,1:k] # FPM - Factor Pattern Matrix
-      FPM<-cbind(FPM,matrix(numeric(0),p,p-k)) # appends empty columns to have p columns
-      rownames(FPM)<-rownames(datasetInput())
-      colnames(FPM)<-paste0("V",1:p)
+    if( input$rotation=="svd" ) {
+      V <- svd(R)$v
+      FPM <- V[, 1:k] # FPM - Factor Pattern Matrix
+      FPM <- cbind(FPM, matrix(numeric(0), p, p-k)) # appends empty columns to have p columns
+      rownames(FPM) <- rownames(datasetInput())
+      colnames(FPM) <- paste0("V", 1:p)
       FPM # THE OUTPUT
-    } else if(input$rotation=="promax"){ 
-      A<- factanal(factors = k, covmat=R, 
+    } 
+    else if( input$rotation=="promax" ) { 
+      A <- factanal(factors = k, covmat=R, 
                    rotation="none", control=list(rotate=list(normalize=TRUE)))
-      A<- GPromax(A$loadings,pow=3)
-      FPM<-A$Lh # FPM - Factor Pattern Matrix
-      FPM<-cbind(FPM,matrix(numeric(0),p,p-k)) # appends empty columns to have p columns
-      colnames(FPM)<-paste0("F",1:p) # renames for better presentation in tables and graphs
+      A <- GPromax(A$loadings, pow=3)
+      FPM <- A$Lh # FPM - Factor Pattern Matrix
+      FPM <- cbind(FPM, matrix(numeric(0), p, p-k)) # appends empty columns to have p columns
+      colnames(FPM) <- paste0("F", 1:p) # renames for better presentation in tables and graphs
       FPM # THE OUTPUT
-    }else if(input$rotation=="none"){ 
-      A<- factanal(factors = k, covmat=R, 
+    } 
+    else if( input$rotation=="none" ) { 
+      A <- factanal(factors = k, covmat=R, 
                    rotation="none", control=list(rotate=list(normalize=TRUE)))
-      FPM<-A
-      FPM<-FPM$loadings # FPM - Factor Pattern Matrix
-      FPM<-cbind(FPM,matrix(numeric(0),p,p-k)) # appends empty columns to have p columns
-      colnames(FPM)<-paste0("F",1:p) # renames for better presentation in tables and graphs
+      FPM <- A
+      FPM <- FPM$loadings # FPM - Factor Pattern Matrix
+      FPM <- cbind(FPM, matrix(numeric(0), p, p-k)) # appends empty columns to have p columns
+      colnames(FPM) <- paste0("F", 1:p) # renames for better presentation in tables and graphs
       FPM  # THE OUTPUT
-    }
-    else if(input$rotation %in% c("cfT","cfQ")){ 
+    } 
+    else if( input$rotation %in% c("cfT","cfQ") ) { 
       A<- factanal(factors = k, covmat=R, 
                    rotation="none", control=list(rotate=list(normalize=TRUE)))
-      L<-A$loadings
-      FPM<-eval(parse(text=
+      L <- A$loadings
+      FPM <- eval(parse(text=
                         paste0(rotationInput(),"(L,Tmat=diag(ncol(L)),kappa=input$kappa,normalize=FALSE, eps=1e-5, maxit=1000)")))
-      FPM<-FPM$loadings # FPM - Factor Pattern Matrix
-      FPM<-cbind(FPM,matrix(numeric(0),p,p-k)) # appends empty columns to have p columns
-      colnames(FPM)<-paste0("F",1:p) # renames for better presentation in tables and graphs
+      FPM <- FPM$loadings # FPM - Factor Pattern Matrix
+      FPM <- cbind(FPM,matrix(numeric(0),p,p-k)) # appends empty columns to have p columns
+      colnames(FPM) <- paste0("F",1:p) # renames for better presentation in tables and graphs
       FPM  # THE OUTPUT
-    }
-    else if(input$rotation==rotationInput() ){ 
-      A<- factanal(factors = k, covmat=R, 
+    } 
+    else if( input$rotation==rotationInput() ) { 
+      A <- factanal(factors = k, covmat=R, 
                    rotation="none", control=list(rotate=list(normalize=TRUE)))
-      L<-A$loadings
-      FPM<-eval(parse(text=
-      paste0(rotationInput(),"(L,Tmat=diag(ncol(L)),normalize=FALSE, eps=1e-5, maxit=1000)")))
-      FPM<-FPM$loadings # FPM - Factor Pattern Matrix
-      FPM<-cbind(FPM,matrix(numeric(0),p,p-k)) # appends empty columns to have p columns
-      colnames(FPM)<-paste0("F",1:p) # renames for better presentation in tables and graphs
+      L <- A$loadings
+      FPM <- eval(parse(text=
+        paste0(rotationInput(),"(L,Tmat=diag(ncol(L)),normalize=FALSE, eps=1e-5, maxit=1000)")))
+      FPM <- FPM$loadings # FPM - Factor Pattern Matrix
+      FPM <- cbind(FPM, matrix(numeric(0), p, p-k)) # appends empty columns to have p columns
+      colnames(FPM) <- paste0("F", 1:p) # renames for better presentation in tables and graphs
       FPM  # THE OUTPUT
     }
 
   })# FPM table (Factor Pattern Matrix)
-
 })
-
-
-
