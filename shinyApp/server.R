@@ -6,6 +6,11 @@ library(plotrix)
 library(sem)
 library(stats)
 
+inFile <- input$file1 #use anywhare in server.R
+if (is.null(inFile))
+  return(NULL)
+read.csv(inFile$datapath, header=input$header, sep=input$sep)
+
 
 # Loads three classic datasets from 'psych' package by William Revelle, http://cran.r-project.org/web/packages/psych/
 source("dataprep.R") # begins with rm(list=ls(all=TRUE))
@@ -30,7 +35,8 @@ dsTag <- reactive({
   switch(EXPR=input$dataset,
          "Cognitive Abilities"="cognitive",
          "Emotional Traits"="emotional",
-         "Physical Measures"="physical"
+         "Physical Measures"="physical",
+         "Uploaded Data"="uploaded"
   )    
 })
 # Dataset
@@ -38,7 +44,8 @@ dsTag <- reactive({
     switch(EXPR=input$dataset,
            "Cognitive Abilities"=cognitive,
            "Emotional Traits"=emotional,
-           "Physical Measures"=physical
+           "Physical Measures"=physical,
+           "Uploaded Data"=uploaded
     )
   })
 # Dataset description
@@ -66,7 +73,8 @@ dsTag <- reactive({
     switch(EXPR=input$dataset,
            "Cognitive Abilities"=p.cognitive,
            "Emotional Traits"=p.emotional,
-           "Physical Measures"=p.physical
+           "Physical Measures"=p.physical,
+           "Uploaded Data"=p.uploaded
     )    
   })
 # Sample size
@@ -74,7 +82,8 @@ dsTag <- reactive({
     switch(EXPR=input$dataset,
            "Cognitive Abilities"=n.cognitive,
            "Emotional Traits"=n.emotional,
-           "Physical Measures"=n.physical
+           "Physical Measures"=n.physical,
+           "Uploaded Data"=n.uploaded
     )    
   })
 # Rotation
@@ -107,7 +116,18 @@ dsTag <- reactive({
   })
 #  correlelogram 
   output$corrgram <- renderPlot({
-    corrgram(datasetInput(),upper.panel=panel.conf, lower.panel=panel.pie,type="cor",order=TRUE)
+    
+    inFile <- input$file1
+    
+    if (is.null(inFile))
+      return(NULL)
+    uploaded<-read.csv(inFile$datapath, header=input$header, sep=input$sep, quote=input$quote)
+    uploaded<-cor(uploaded)
+    vars.uploaded<-colnames(uploaded)
+    n.uploaded<-nrow(uploaded)
+    p.uploaded<-ncol(uploaded)
+    
+    corrgram(datasetInput(),upper.panel=panel.conf, lower.panel=panel.shade,type="cor",order=TRUE)
   }) 
 # eigen plots
   output$eigens<-renderPlot({
@@ -157,8 +177,18 @@ dsTag <- reactive({
       theme(axis.text.x =element_text(angle=0,hjust=.5))+
       facet_grid(Variable~.)
     print(pp)
-
   }) # FPM plot (Factor Pattern Matrix)
+
+output$contents <- renderTable({
+  # input$file1 will be NULL initially. After the user selects and uploads a 
+  # file, it will be a data frame with 'name', 'size', 'type', and 'datapath' 
+  # columns. The 'datapath' column will contain the local filenames where the 
+  # data can be found.
+  inFile <- input$file1 #use anywhare in server.R
+  if (is.null(inFile))
+    return(NULL)
+  read.csv(inFile$datapath, header=input$header, sep=input$sep)
+}) # Displaces the data that was uploaded
 
  output$patternMatrix<-renderTable({
     # Reactive code
@@ -216,23 +246,6 @@ dsTag <- reactive({
       colnames(FPM)<-paste0("F",1:p) # renames for better presentation in tables and graphs
       FPM  # THE OUTPUT
     }
-#     else if(input$rotation=="varimax"{ 
-#       A<- factanal(factors = k, covmat=R, 
-#                   rotation=rotationInput(),kappa=0, control=list(rotate=list(normalize=TRUE)))
-#       L<-A$loadings
-#       Varimax(L, Tmat=diag(ncol(L)),                   normalize=FALSE, eps=1e-5, maxit=1000)
-#       FPM<-A$loadings # FPM - Factor Pattern Matrix
-#       FPM<-cbind(FPM,matrix(numeric(0),p,p-k)) # appends empty columns to have p columns
-#       colnames(FPM)<-paste0("F",1:p) # renames for better presentation in tables and graphs
-#       FPM  # THE OUTPUT
-#     }
-
-    ##  -- IF end 
-    # procedures
-    
-#       FPM<-A$loadings[1:p,] # FPM - Factor Pattern Matrix
-#       FPM<-cbind(FPM,matrix(numeric(0),p,p-k)) # appends empty columns to have p columns
-#       colnames(FPM)<-paste0("F",1:p) # renames for better presentation in tables and graphs
 
   })# FPM table (Factor Pattern Matrix)
 

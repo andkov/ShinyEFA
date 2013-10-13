@@ -22,3 +22,6 @@ shinyUI(pageWithSidebar(
     tableOutput('contents')
   )
 ))
+
+
+read.csv(inFile$datapath, header=input$header, sep=input$sep, quote=input$quote)

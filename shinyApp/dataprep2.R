@@ -1,4 +1,4 @@
-rm(list=ls(all=TRUE))
+# rm(list=ls(all=TRUE))
 library(datasets)
 library(ggplot2) # load ggplot
 library(psych)
@@ -58,12 +58,17 @@ rownames(physical)<-vars.physycal.short
 n.physical<-305
 p.physical<-nrow(physical)
 
+uploaded<-cor(input$file1)
+vars.uploaded<-colnames(uploaded)
+n.uploaded<-nrow(input$file1)
+p.uploaded<-ncol(input$file1)
+
 
 rm(list=setdiff(ls(),c("cognitive","emotional", "physical",
                        "vars.cognitive", "vars.emotional","vars.physical",
-                       "vars.physycal.short",
-                       "n.cognitive","n.emotional","n.physical",
-                       "p.cognitive","p.emotional","p.physical")))
+                       "vars.physycal.short","vars.uploaded",
+                       "n.cognitive","n.emotional","n.physical","n.uploaded",
+                       "p.cognitive","p.emotional","p.physical","p.uploaded")))
 
 
 
