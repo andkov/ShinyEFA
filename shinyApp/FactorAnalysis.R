@@ -16,6 +16,7 @@ p<-p.cognitive
 # F<-cbind(F,matrix(numeric(0),p,p-k))
 # colnames(F)<-paste0("F",1:ncol(R))
 
+
 A <- factanal(covmat=R,n.obs=n.obs,factors=k,maxit=1000,rotation="none")
 # input$dataset is not passing name of the dataset to facanal(), log:
 # Error in factanal(covmat = input$dataset, n.obs = n(), factors = input$k,:
