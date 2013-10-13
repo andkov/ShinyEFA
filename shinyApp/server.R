@@ -6,11 +6,6 @@ library(plotrix)
 library(sem)
 library(stats)
 
-inFile <- input$file1 #use anywhare in server.R
-if (is.null(inFile))
-  return(NULL)
-read.csv(inFile$datapath, header=input$header, sep=input$sep)
-
 
 # Loads three classic datasets from 'psych' package by William Revelle, http://cran.r-project.org/web/packages/psych/
 source("dataprep.R") # begins with rm(list=ls(all=TRUE))
@@ -117,17 +112,7 @@ dsTag <- reactive({
 #  correlelogram 
   output$corrgram <- renderPlot({
     
-    inFile <- input$file1
-    
-    if (is.null(inFile))
-      return(NULL)
-    uploaded<-read.csv(inFile$datapath, header=input$header, sep=input$sep, quote=input$quote)
-    uploaded<-cor(uploaded)
-    vars.uploaded<-colnames(uploaded)
-    n.uploaded<-nrow(uploaded)
-    p.uploaded<-ncol(uploaded)
-    
-    corrgram(datasetInput(),upper.panel=panel.conf, lower.panel=panel.shade,type="cor",order=TRUE)
+  corrgram(datasetInput(),upper.panel=panel.conf, lower.panel=panel.shade,type="cor",order=TRUE)
   }) 
 # eigen plots
   output$eigens<-renderPlot({
