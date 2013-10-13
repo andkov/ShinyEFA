@@ -110,11 +110,14 @@ shinyServer( function(input, output) {
     )    
   })
 # # What tabset is it?
- currentTabset <- reactive({
-switch(EXPR=input$tabcur,
-       "Data"=pyr.data,
-       "Correlations"=pyr.correlation)
-})
+  currentTabset <- reactive({
+    print(input$tabcur)
+    switch(EXPR=input$tabcur,
+         "Data"="FApyramid_03.png", #Fix these to the real value
+         "Correlations"="FApyramid_D_03.png" #Fix these to the real value
+    #Add the other tab names
+    )
+  })
 
 ####        OUTPUT ####
 # some description
@@ -150,10 +153,12 @@ switch(EXPR=input$tabcur,
   })
 
 # Pyramid Image
- output$PyramidImage<-renderImage({
-   src(file.path(getwd(),"images/FApyramid_03.png"))
- })
-
+ output$PyramidImage <- renderImage({
+   #print(currentTabset())
+   filePath <- currentTabset()
+   list(src=file.path(getwd(), "images", filePath), alt="Matrix decomposition options")
+#    list(src=file.path(getwd(), "images/FApyramid_03.png"), alt="Matrix decomposition options")
+ }, deleteFile=FALSE)
 
  output$patternPlot <- renderPlot({  
     # Reactive code
