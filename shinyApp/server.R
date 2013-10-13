@@ -31,7 +31,7 @@ shinyServer( function(input, output) {
 # load it into object uploaded.data
 # and execute source(dataprep2), which contains code for extra dataset
 # if not, source (dataprep), the original data prep
-
+source(file.path(getwd(), "sourced", "AdvancedFactorFunctions_CF.R"))
 source("dataprep.R") # begins with rm(list=ls(all=TRUE)) 
 dscr.cognitive <- "The nine psychological variables from Harman (1967, p 244) are taken from unpublished class notes of K.J. Holzinger with 696 participants." 
 dscr.emotional <- "Eight emotional variables are taken from Harman (1967, p 164) who in turn adapted them from Burt (1939). They are said be from 172 normal children aged nine to twelve. As pointed out by Jan DeLeeuw, the Burt data set is a subset of 8 variables from the original 11 reported by Burt in 1915. That matrix has the same problem."
