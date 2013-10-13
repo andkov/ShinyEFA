@@ -22,10 +22,15 @@ shinyUI(pageWithSidebar(
                 choices = c("Cognitive Abilities", "Emotional Traits", "Physical Measures")),
     # Choose the number of factor you decided to retain
     numericInput("k",label="Retain k factors:",value=3),
+    
+#     # Choose the rotation of the principal component
+#     radioButtons("PCA","Principle Components",
+#                  list("Eigenvectors, VDV'"="svd"
+#                       )),
+  
     # Choose the rotation of the factor pattern
-    radioButtons("rotation","Choose the rotation of Factor Pattern",
-                 list("V from SVD"="svd",
-                      "Unrotated"="none",
+    radioButtons("rotation","Common Factors",
+                 list("Unrotated"="none",
                       "Quartimax"="quartimax", # 1953
                       "Quartimin"="quartimin", # 1953
                       "Varimax"="varimax", # 1958
@@ -38,11 +43,11 @@ shinyUI(pageWithSidebar(
   mainPanel(
     h3(textOutput("Description of the current tab")), 
     tabsetPanel(
-      tabPanel("Variables"),
-      tabPanel("R", plotOutput("corrgram",height="600px"),h5(textOutput("dscr"))),
-      tabPanel("Eigens",plotOutput("eigens",height="600px")),
-      tabPanel("RMSEA",plotOutput("RMSEA",height="600px")),
-      tabPanel("Pattern",plotOutput("patternPlot",width="80%",height="600px")), 
+      tabPanel("Variables",tableOutput("varNames")),
+      tabPanel("R", plotOutput("corrgram",width="60%",height="400px"),h5(textOutput("dscr"))),
+      tabPanel("Eigens",plotOutput("eigens",height="500px")),
+      tabPanel("RMSEA",plotOutput("RMSEA",height="500px")),
+      tabPanel("Pattern",plotOutput("patternPlot",width="80%",height="500px")), 
       tabPanel("Table",tableOutput("patternMatrix")),
       selected="Variables")            
   )
