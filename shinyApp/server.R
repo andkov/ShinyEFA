@@ -8,6 +8,7 @@ library(stats)
 library(GPArotation)
 
 
+uploaded <- reactive(data[data$x == input$file1, ])
 # Loads three classic datasets from 'psych' package by William Revelle, http://cran.r-project.org/web/packages/psych/
 source("dataprep.R") # begins with rm(list=ls(all=TRUE))
 # loads custom funtions by James S. Steier. Visit www.statpower.net for description and download
