@@ -4,6 +4,7 @@ library(ggplot2) # load ggplot
 library(psych)
 library(plotrix)
 library(sem)
+library(GPArotation)
 
 data(Harman)
 

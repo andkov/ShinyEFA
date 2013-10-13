@@ -5,6 +5,7 @@ library(psych)
 library(corrgram)
 library(plotrix)
 library(sem)
+library(GPArotation)
 
 # Define UI for dataset viewer application
 shinyUI(pageWithSidebar(

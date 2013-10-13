@@ -5,6 +5,7 @@ library(psych)
 library(plotrix)
 library(sem)
 library(stats)
+library(GPArotation)
 
 
 # Loads three classic datasets from 'psych' package by William Revelle, http://cran.r-project.org/web/packages/psych/
