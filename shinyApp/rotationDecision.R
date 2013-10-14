@@ -1,4 +1,3 @@
-setwd(file.path(getwd(),"shinyApp"))
 
 if( input$rotation=="svd" ) {
   V <- base::svd(R)$v
