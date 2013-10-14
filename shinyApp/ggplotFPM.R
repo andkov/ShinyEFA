@@ -46,7 +46,7 @@ pp <- ggplot(dsFORp, aes(x=Factor, y=LoadingAbs, fill=Positive, color=Positive, 
   scale_color_manual(values=colorsColor, guide="none") +
   scale_fill_manual(values=colorsFill) +
 #   scale_fill_discrete(h=c(0,360)+15, c=100, l=65, h.start=0, direction=1, na.value="grey50") + #http://docs.ggplot2.org/0.9.3/scale_hue.html
-  scale_y_continuous(limits=c(0,1), breaks=c(.5, 1), expand=c(0,0)) +
+  scale_y_continuous(limits=c(0,1.2), breaks=c(.5, 1), expand=c(0,0)) +
   facet_grid(VariablePretty ~ .) +
   labs(title=title, x="FFF", y="Loadings (Absolute)", fill=NULL) + 
   theme_bw() +
