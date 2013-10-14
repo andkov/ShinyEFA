@@ -54,18 +54,25 @@ shinyUI(
     
     # MAIN PANEL #.
     mainPanel(
-      h3(textOutput("dlkafjd lkdjf a")), 
+#       h3(textOutput("dlkafjd lkdjf a")), 
       tabsetPanel(id="tabcur",
-                  tabPanel("Data",id="tabData", tableOutput("contents")),
-                  tabPanel("Correlations",id="tabCorrelations", plotOutput("corrgram", height="600px"), h5(textOutput("dscr.data"))),
-                  tabPanel("Eigens",id="tabEigens", plotOutput("eigens", height="600px")),
-                  tabPanel("RMSEA",id="tabRMSEA", plotOutput("RMSEA", height="600px")),
-                  tabPanel("Components",id="tabComponents", plotOutput("patternPlotPCA", width="80%", height="600px")), 
-                  tabPanel("Factors",id="tabFactors", plotOutput("patternPlot", width="65%", height="600px")), 
+                  tabPanel("Data",id="tabData", 
+                           tableOutput("contents")),
+                  tabPanel("Correlations",id="tabCorrelations", 
+                           plotOutput("corrgram", width="90%", height="800px"), 
+                           h5(textOutput("dscr.data"))),
+                  tabPanel("Eigens",id="tabEigens", 
+                           plotOutput("eigens", width="60%",height="600px")),
+                  tabPanel("RMSEA",id="tabRMSEA", 
+                           plotOutput("RMSEA", width="60%", height="600px")),
+                  tabPanel("Components",id="tabComponents", 
+                           plotOutput("patternPlotPCA", width="90%", height="850px")), 
+                  tabPanel("Factors",id="tabFactors", 
+                           plotOutput("patternPlotFA", width="90%", height="850px")), 
                   #         tabPanel("Table",id="tabTable", tableOutput("patternMatrix")),
                   selected="Data"
       ),# #Close tabsetPanel          
-      imageOutput("PyramidImage", width="80%", height="600px")
+      imageOutput("PyramidImage", width="20%", height="80px")
     ) #Close mainPanel  
   ) #Close pageWithSidebar
 ) #Close shinyUI

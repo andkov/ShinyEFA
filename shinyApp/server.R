@@ -115,7 +115,7 @@ shinyServer( function(input, output) {
            "Data"=           "FApyramid_03.png", 
            "Correlations"=   "FApyramid_R_03.png",
            "Eigens"=         "FApyramid_D_03.png", 
-           "RMSEA"=          "FApyramid_03.png",
+           "RMSEA"=          "FApyramid_D_03.png",
            "Components"=     "FApyramid_V_03.png",
            "Factors"=        "FApyramid_L_03.png",
            "Table"=          "FApyramid_L_03.png" 
@@ -136,10 +136,14 @@ shinyServer( function(input, output) {
 # tabset description
   output$dscr.tabset <- renderPrint({
     print(c("Description of the current tabset"))
-  })
+  }) 
 #  correlelogram 
   output$corrgram <- renderPlot({
-    corrgram(datasetInput(), upper.panel=panel.conf, lower.panel=panel.shade, type="cor", order=TRUE)
+    corrgram(datasetInput(), 
+             upper.panel=panel.conf, 
+             lower.panel=panel.pie, 
+             type="cor", order=TRUE
+             )
   }) 
 # eigen plots
   output$eigens <- renderPlot({
@@ -175,15 +179,17 @@ shinyServer( function(input, output) {
     FPM <- V[, 1:k] # FPM - Factor Pattern Matrix
     FPM <- cbind(FPM, matrix(numeric(0), p, p-k)) # appends empty columns to have p columns
     rownames(FPM) <- rownames(datasetInput())
-    colnames(FPM) <- paste0("V", 1:p) #Andrey, should this be 'F' instead of 'V'?
+    colnames(FPM) <- paste0("V", 1:p) # V, not F because these are components, not factors
 #     FPM
     # output
     source("patternPlot.R", local=TRUE) #Defines the function to produce a graph; usus FMP to create ggplot
-    graphToShow <- fpmFunction(FPM.matrix=FPM, mainTitle="from output$patternPlotPCA") #Call/execute the function defined above.
+    graphToShow <- fpmFunction(FPM.matrix=FPM, mainTitle=NULL
+                                # "from output$patternPlotPCA"    # uncomment line to customize title
+                               ) #Call/execute the function defined above.
     print(graphToShow) #Print that graph.
   }) # FPM plot (Factor Pattern Matrix)
 
-output$patternPlot <- renderPlot({  
+output$patternPlotFA <- renderPlot({  
   # Reactive code
   R <- datasetInput() # the choice of the dataset in ui.R
   k <- input$k # the choice of the number of factors to retain from ui.R
@@ -191,7 +197,9 @@ output$patternPlot <- renderPlot({
   p <- p() # the choice of dataset defines p - its number of variables
   source("rotationDecision.R",local=TRUE) # input$rotation -> factanla -> GPArotation
   source("patternPlot.R",local=TRUE) # usus FMP to create ggplot
-  graphToShow <- fpmFunction(FPM.matrix=FPM, mainTitle="from output$patternPlot") #Call/execute the function defined above.
+  graphToShow <- fpmFunction(FPM.matrix=FPM, mainTitle=NULL
+#                                "from output$patternPlotFA"      # uncomment line to customize title
+                             ) #Call/execute the function defined above.
   print(graphToShow) #Print that graph.
   
 }) # FPM plot (Factor Pattern Matrix)
