@@ -11,9 +11,9 @@
   else if( input$rotation=="promax" ) { 
     A <- stats::factanal(factors = k, covmat=R, 
                          rotation="none", control=list(rotate=list(normalize=TRUE)))
-    FPM <- promax(A, pow)$loadings
-    #       A <- GPromax(A$loadings, pow=3)
-    #       FPM <- A$Lh # FPM - Factor Pattern Matrix
+    FPM <- stats::promax(A$loadings, m=3)$loadings    
+#     A <- GPromax(A$loadings, pow=3)
+#     FPM <- A$Lh # FPM - Factor Pattern Matrix
     FPM <- cbind(FPM, matrix(numeric(0), p, p-k)) # appends empty columns to have p columns
     colnames(FPM) <- paste0("F", 1:p) # renames for better presentation in tables and graphs
     FPM # THE OUTPUT
