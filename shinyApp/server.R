@@ -177,9 +177,11 @@ shinyServer( function(input, output) {
     FPM <- cbind(FPM, matrix(numeric(0), p, p-k)) # appends empty columns to have p columns
     rownames(FPM) <- rownames(datasetInput())
     colnames(FPM) <- paste0("V", 1:p) #Andrey, should this be 'F' instead of 'V'?
-    FPM
+#     FPM
     # output
-source("patternPlot.R",local=TRUE) # usus FMP to create ggplot
+    source("patternPlot.R", local=TRUE) #Defines the function to produce a graph; usus FMP to create ggplot
+    graphToShow <- fpmFunction(FPM.matrix=FPM, mainTitle="from output$patternPlotPCA") #Call/execute the function defined above.
+    print(graphToShow) #Print that graph.
   }) # FPM plot (Factor Pattern Matrix)
 
 output$patternPlot <- renderPlot({  
@@ -188,8 +190,10 @@ output$patternPlot <- renderPlot({
   k <- input$k # the choice of the number of factors to retain from ui.R
   n.obs <- n()  # choice of the dataset defines  n - its sample size
   p <- p() # the choice of dataset defines p - its number of variables
-source("rotationDecision.R",local=TRUE) # input$rotation -> factanla -> GPArotation
-source("patternPlot.R",local=TRUE) # usus FMP to create ggplot
+  source("rotationDecision.R",local=TRUE) # input$rotation -> factanla -> GPArotation
+  source("patternPlot.R",local=TRUE) # usus FMP to create ggplot
+  graphToShow <- fpmFunction(FPM.matrix=FPM, mainTitle="from output$patternPlot") #Call/execute the function defined above.
+  print(graphToShow) #Print that graph.
   
 }) # FPM plot (Factor Pattern Matrix)
 
