@@ -1,6 +1,8 @@
 # output$patternPlot <- renderPlot({
 rm(list=ls(all=TRUE))
+options("scipen"=10, "digits"=5) 
 library(psych)
+library(ggplot2)
 data(Harman)
 R<-Harman.Holzinger
   # Reactive code 
@@ -34,8 +36,23 @@ R<-Harman.Holzinger
   pp <- ggplot(dsFORp, aes(x=Factor, y=Loading, fill=positive)) +
     ggtitle(title) + 
     geom_bar(stat="identity") +
+    geom_text(aes(label=Loading), vjust=1.5, colour="black")+
     scale_fill_manual(values=colors) +
     scale_y_continuous(limits=c(0,1)) +
-    theme(axis.text.x=element_text(angle=0, hjust=.5)) +
-    facet_grid(Variable ~ .)
+    facet_grid(Variable ~ .)+
+    theme(panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank(),
+          panel.background =element_rect(fill="white"),
+          axis.text.x=element_text(angle=0, hjust=.5))
   print(pp)
+
+
+
+
+# Below the top
+ggplot(cabbage_exp, aes(x=interaction(Date, Cultivar), y=Weight)) +
+  geom_bar(stat="identity") +
+  geom_text(aes(label=Weight), vjust=1.5, colour="white")
+
+
+
