@@ -25,8 +25,9 @@ shinyUI(
       # Choose the number of factor you decided to retain
       numericInput("k", label="Retain k factors:", value=3),
       
+    
       # Choose the rotation of the factor pattern
-      radioButtons("rotation","Choose the rotation of Factor Pattern",
+      radioButtons("rotation","Choose the rotation Method",
                    list("SVD eigenvectors"="svd",
                         "Unrotated"="none",
                         "Varimax (T)"="Varimax", 
@@ -60,8 +61,9 @@ shinyUI(
         tabPanel("Correlations",id="tabCorrelations", plotOutput("corrgram", height="600px"), h5(textOutput("dscr.data"))),
         tabPanel("Eigens",id="tabEigens", plotOutput("eigens", height="600px")),
         tabPanel("RMSEA",id="tabRMSEA", plotOutput("RMSEA", height="600px")),
-        tabPanel("Patterns",id="tabPatterns", plotOutput("patternPlot", width="80%", height="600px")), 
-        tabPanel("Table",id="tabTable", tableOutput("patternMatrix")),
+        tabPanel("Components",id="tabComponents", plotOutput("patternPlotPCA", width="80%", height="600px")), 
+        tabPanel("Factors",id="tabFactors", plotOutput("patternPlot", width="80%", height="600px")), 
+#         tabPanel("Table",id="tabTable", tableOutput("patternMatrix")),
         selected="Data"
       ),# #Close tabsetPanel          
       imageOutput("PyramidImage", width="80%", height="600px")

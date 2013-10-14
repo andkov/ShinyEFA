@@ -117,7 +117,8 @@ shinyServer( function(input, output) {
            "Correlations"=   "FApyramid_R_03.png",
            "Eigens"=         "FApyramid_D_03.png", 
            "RMSEA"=          "FApyramid_03.png",
-           "Patterns"=       "FApyramid_L_03.png",
+           "Components"=     "FApyramids_V_03.png",
+           "Factors"=        "FApyramid_L_03.png",
            "Table"=          "FApyramid_L_03.png" 
     #Add the other tab names
     )
@@ -164,42 +165,35 @@ shinyServer( function(input, output) {
 #    list(src=file.path(getwd(), "images/FApyramid_03.png"), alt="Matrix decomposition options")
  }, deleteFile=FALSE)
 
- output$patternPlot <- renderPlot({  
+ output$patternPlotPCA <- renderPlot({  
     # Reactive code
     R <- datasetInput() # the choice of the dataset in ui.R
     k <- input$k # the choice of the number of factors to retain from ui.R
     n.obs <- n()  # choice of the dataset defines  n - its sample size
     p <- p() # the choice of dataset defines p - its number of variables
     # procedures
-    A <- stats::factanal(covmat=R, n.obs=n.obs, factors=k, maxit=1000, rotation="none")
-    FPM <- A$loadings[1:p, ] # FPM - Factor Pattern Matrix
+    V <- base::svd(R)$v
+    FPM <- V[, 1:k] # FPM - Factor Pattern Matrix
     FPM <- cbind(FPM, matrix(numeric(0), p, p-k)) # appends empty columns to have p columns
-    colnames(FPM) <- paste0("F", 1:p) # renames for better presentation in tables and graphs
-    A <- stats::factanal(covmat=R, n.obs=n.obs, factors=k, maxit=1000, rotation="none")
-    F <- A$loadings[1:p, ]
-    F <- cbind(F, matrix(numeric(0), p, p-k))
-    colnames(F) <- paste0("F", 1:ncol(R))
+    rownames(FPM) <- rownames(datasetInput())
+    colnames(FPM) <- paste0("V", 1:p) #Andrey, should this be 'F' instead of 'V'?
+    FPM
     # output
-    # Data prep for ggplot
-    dsFORp <- reshape2::melt(FPM, id.vars=rownames(FPM))  ## id.vars declares MEASURED variables (as opposed to RESPONSE variable)
-    dsFORp <- plyr::rename(dsFORp, replace=c(Var1="Variable", Var2="Factor", value="Loading"))
-    dsFORp$positive <- dsFORp$Loading >= 0 # is factor loading positive? color coded in ggplot
-    dsFORp$Loading <- abs(as.numeric(dsFORp$Loading)) # Long form
-    # The colors for negative and positve values of factor loadings for ggplot
-    colors <- c("darksalmon" ,"lightskyblue")
-    title <- "Basic Title"
-    # Graph definition
-    pp <- ggplot(dsFORp, aes(x=Factor, y=Loading, fill=positive)) +
-      ggtitle(title) + 
-      geom_bar(stat="identity") +
-      scale_fill_manual(values=colors) +
-      scale_y_continuous(limits=c(0,1)) +
-      theme(axis.text.x=element_text(angle=0, hjust=.5)) +
-      facet_grid(Variable ~ .)
-    print(pp)
+source("patternPlot.R") # usus FMP to create ggplot
   }) # FPM plot (Factor Pattern Matrix)
 
-  output$contents <- renderTable({
+output$patternPlot <- renderPlot({  
+  # Reactive code
+  R <- datasetInput() # the choice of the dataset in ui.R
+  k <- input$k # the choice of the number of factors to retain from ui.R
+  n.obs <- n()  # choice of the dataset defines  n - its sample size
+  p <- p() # the choice of dataset defines p - its number of variables
+source("rotationDecision.R") # input$rotation -> factanla -> GPArotation
+source("patternPlot.R") # usus FMP to create ggplot
+  
+}) # FPM plot (Factor Pattern Matrix)
+
+output$contents <- renderTable({
 # if(datasetInput()==uploaded){
 #     inFile <- input$file1 #use anywhare in server.R
 #     if( is.null(inFile) )
@@ -210,7 +204,7 @@ shinyServer( function(input, output) {
 # } 
 }) # Displaces the data that was uploaded
 
- output$patternMatrix <- renderTable({
+output$patternMatrix <- renderTable({
     # Reactive code
     R <- datasetInput() # the choice of the dataset in ui.R
     k <- input$k # the choice of the number of factors to retain from ui.R
