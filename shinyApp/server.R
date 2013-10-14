@@ -113,8 +113,12 @@ shinyServer( function(input, output) {
   currentTabset <- reactive({
     print(input$tabcur)
     switch(EXPR=input$tabcur,
-         "Data"="FApyramid_03.png", #Fix these to the real value
-         "Correlations"="FApyramid_D_03.png" #Fix these to the real value
+           "Data"=           "FApyramid_03.png", 
+           "Correlations"=   "FApyramid_R_03.png",
+           "Eigens"=         "FApyramid_D_03.png", 
+           "RMSEA"=          "FApyramid_03.png",
+           "Patterns"=       "FApyramid_L_03.png",
+           "Table"=          "FApyramid_L_03.png" 
     #Add the other tab names
     )
   })
