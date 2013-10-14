@@ -99,7 +99,6 @@ shinyServer( function(input, output) {
 # Rotation
   rotationInput <- reactive({
     switch(EXPR=input$rotation,
-           svd="svd",
            none="none",
            Varimax="Varimax", # 1958
            promax="promax",
@@ -117,7 +116,7 @@ shinyServer( function(input, output) {
            "Correlations"=   "FApyramid_R_03.png",
            "Eigens"=         "FApyramid_D_03.png", 
            "RMSEA"=          "FApyramid_03.png",
-           "Components"=     "FApyramids_V_03.png",
+           "Components"=     "FApyramid_V_03.png",
            "Factors"=        "FApyramid_L_03.png",
            "Table"=          "FApyramid_L_03.png" 
     #Add the other tab names
