@@ -54,18 +54,32 @@ shinyUI(
     
     # MAIN PANEL #.
     mainPanel(
-      h3(textOutput("dlkafjd lkdjf a")), 
-      tabsetPanel(id="tabcur",
-                  tabPanel("Data",id="tabData", tableOutput("contents")),
-                  tabPanel("Correlations",id="tabCorrelations", plotOutput("corrgram", height="600px"), h5(textOutput("dscr.data"))),
-                  tabPanel("Eigens",id="tabEigens", plotOutput("eigens", height="600px")),
-                  tabPanel("RMSEA",id="tabRMSEA", plotOutput("RMSEA", height="600px")),
-                  tabPanel("Components",id="tabComponents", plotOutput("patternPlotPCA", width="80%", height="600px")), 
-                  tabPanel("Factors",id="tabFactors", plotOutput("patternPlot", width="65%", height="600px")), 
-                  #         tabPanel("Table",id="tabTable", tableOutput("patternMatrix")),
-                  selected="Data"
-      ),# #Close tabsetPanel          
+      h3(textOutput("FFFFFFF")),
+      tabsetPanel(id="tabcur"
+          ,tabPanel("Data",id="tabData", value=1, tableOutput("contents"))
+          ,tabPanel("Correlations",id="tabCorrelations",value=1, plotOutput("corrgram", height="600px"))
+          ,tabPanel("Eigens",id="tabEigens",value=2, plotOutput("eigens", height="600px"))
+          ,tabPanel("RMSEA",id="tabRMSEA",value=2, plotOutput("RMSEA", height="600px"))
+          ,tabPanel("Components",id="tabComponents", value=2,plotOutput("patternPlotPCA", width="80%", height="600px"))
+          ,tabPanel("Factors",id="tabFactors", value=3,plotOutput("patternPlot", width="80%", height="600px"))
+      
+#      tabPanel("Table",id="tabTable", tableOutput("patternMatrix")),
+          #,selected="Data"
+          
+         
+      ),#Close tabsetPanel          
       imageOutput("PyramidImage", width="80%", height="600px")
     ) #Close mainPanel  
   ) #Close pageWithSidebar
 ) #Close shinyUI
+
+
+# 
+# mainPanel(
+#   tabsetPanel(
+#     tabPanel("Panel 1", value=1), 
+#     tabPanel("Panel 2", value=2)
+#     , id = "conditionedPanels"
+#   )
+# )
+# )
