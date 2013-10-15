@@ -61,7 +61,7 @@ shinyUI(
                            h5(textOutput("dscr.data"))),
                   tabPanel("Correlations",id="tabCorrelations", 
                            plotOutput("corrgram", width="90%", height="800px"), 
-                           h5(textOutput("dscr.data"))),
+                           h5(textOutput("dscr.data2"))),
                   tabPanel("Eigens",id="tabEigens", 
                            plotOutput("eigens", width="60%",height="600px")),
                   tabPanel("RMSEA",id="tabRMSEA", 
