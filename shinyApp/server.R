@@ -131,7 +131,7 @@ shinyServer( function(input, output) {
 
 # data description
   output$dscr.data <- renderPrint ({
-    datasetDescription()
+    cat(datasetDescription())
   })
   output$dscr.data2 <- renderPrint ({
     print("ssssssss2222")
