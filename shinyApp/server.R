@@ -22,8 +22,8 @@ library(stats)
 # # Descriptions of the tabsets
 # dscr.R<-c("Correlogram of the observed variables")
 # dscr.eigens<- c("Eigenvalues from the diagonal of D in VDV'")
-source(file.path(getwd(), "sourced", "Steiger R library functions.txt"))
-source(file.path(getwd(), "sourced", "AdvancedFactorFunctions_CF.R"))
+source(file.path(getwd(), "sourced", "SteigerRLibraryFunctions.txt"))
+source(file.path(getwd(), "sourced", "AdvancedFactorFunctions_CF.r"))
 source("dataprep.R") # begins with rm(list=ls(all=TRUE)) 
 dscr.cognitive <- "The nine psychological variables from Harman (1967, p 244) are taken from unpublished class notes of K.J. Holzinger with 696 participants." 
 dscr.emotional <- "Eight emotional variables are taken from Harman (1967, p 164) who in turn adapted them from Burt (1939). They are said be from 172 normal children aged nine to twelve. As pointed out by Jan DeLeeuw, the Burt data set is a subset of 8 variables from the original 11 reported by Burt in 1915. That matrix has the same problem."

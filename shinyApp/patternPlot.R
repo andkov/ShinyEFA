@@ -5,7 +5,8 @@ fpmFunction <- function( FPM.matrix, mainTitle=NULL ){
   roundingDigits <- 2 #Let the user define?
   stripSize <- 24  #Let the user define?
   valuelabelSize <- 7 # the values of the factor loadings
-  axisfontSize<-18
+  axisTitleFontSize <- 18
+  axisTextFontSize <- 18
   # output
   # Data prep for ggplot
   dsFORp <- reshape2::melt(FPM.matrix, id.vars=rownames(FPM.matrix))  ## id.vars declares MEASURED variables (as opposed to RESPONSE variable)
@@ -13,7 +14,8 @@ fpmFunction <- function( FPM.matrix, mainTitle=NULL ){
   dsFORp$Positive <- ifelse(dsFORp$Loading >= 0, "Positive", "Negative") #Or see Recipe 10.8
   dsFORp$LoadingAbs <- abs(dsFORp$Loading) # Long form
   dsFORp$LoadingPretty <- round(abs(dsFORp$Loading), roundingDigits) # Long form
-  dsFORp$VariablePretty <- gsub(pattern="_", replacement="\n", x=dsFORp$Variable)
+#   dsFORp$VariablePretty <- gsub(pattern="_", replacement="\n", x=dsFORp$Variable)
+  dsFORp$VariablePretty <- gsub(pattern=" ", replacement="\n", x=dsFORp$Variable)
   # colors <- c("FALSE"="darksalmon" ,"TRUE"="lightskyblue") # The colors for negative and positve values of factor loadings for ggplot
 
   # Colors for fill and font
@@ -54,11 +56,12 @@ fpmFunction <- function( FPM.matrix, mainTitle=NULL ){
     labs(title=mainTitle, x="Weights", y="Loadings (Absolute)", fill=NULL) + 
     theme_bw() +
     theme(panel.grid.minor=element_blank()) + 
-    #   theme(axis.label=element_text(color="gray30")) +  
-    theme(axis.text.y=element_text(color="gray50",size=axisfontSize)) + 
-    theme(axis.text.x=element_text(color="gray50",size=axisfontSize)) +
-    theme(strip.text.y=element_text(angle=0, size=stripSize))
-    
+    theme(axis.title=element_text(color="gray30", size=axisTitleFontSize)) + #The labels (eg, 'Weights' & 'Loadings') 
+    theme(axis.text.x=element_text(color="gray50", size=axisTextFontSize, vjust=1.3)) + #(eg, V1, V2,...)
+    theme(axis.text.y=element_text(color="gray50", size=axisTextFontSize)) + #(eg, 0.5, 1.0)
+    theme(strip.text.y=element_text(angle=0, size=stripSize)) + 
+    theme(legend.text=element_text(size=20)) #Todo: declare '20' in some variable above
+  
 {
       if( k < p ) {
         pp <- pp + theme(legend.position=c(1, 0), legend.justification=c(1, 0)) 
