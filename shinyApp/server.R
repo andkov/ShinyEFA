@@ -125,13 +125,16 @@ shinyServer( function(input, output) {
 
 ####        OUTPUT ####
 # some description
-  output$somedscr <- renderPrint ({
-    print("Some Description")
-  })
+#   output$somedscr <- renderPrint ({
+#     print("Some Description")
+#   })
 
 # data description
   output$dscr.data <- renderPrint ({
-    datasetDescription() 
+    cat(datasetDescription() )
+  })
+  output$dscr.data2 <- renderPrint ({
+    print("ssssssss2222")
   })
 # tabset description
   output$dscr.tabset <- renderPrint({
