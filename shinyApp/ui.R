@@ -21,7 +21,10 @@ shinyUI(
                   choices = c("Cognitive Abilities", 
                               "Emotional Traits", 
                               "Physical Measures",
-                              "Uploaded Data")),
+#                               "Harman74",
+                              "Thurstone"
+#                               ,"Uploaded Data"
+                              )),
       # Choose the number of factor you decided to retain
       numericInput("k", label="Retain k factors:", value=3),
       

@@ -6,6 +6,8 @@ library(plotrix)
 library(sem)
 library(GPArotation)
 
+
+
 data(Harman)
 
 
@@ -60,11 +62,18 @@ rownames(physical) <- vars.physycal
 n.physical <- 305
 p.physical <- nrow(physical)
 
-
+#  24 psychological tests, N=145, Harman p.125 
 Harman74<-as.matrix(datasets::Harman74.cor$cov)
+vars.Harman74<-colnames(Harman74)
+n.Harman74<-145
+p.Harman74<-nrow(Harman74)
 
+#  from GPArotation, no information provided in the package
 data(Thurstone)
 Thurstone<-Thurstone 
+vars.Thurstone<-colnames(Thurstone)
+n.Thurstone<-200 # not sure of the number
+p.Thurstone<-nrow(Thurstone)
 
 
 # rm(list=setdiff(ls(), c("cognitive", "emotional", "physical",

@@ -1,9 +1,9 @@
 # source(file.path(getwd(), "sourced", "AdvancedFactorFunctions_CF.r"))
 
-R <- cognitive # the choice of the dataset in ui.R
-k <- 3 # the choice of the number of factors to retain from ui.R
-n.obs <- 600 # choice of the dataset defines  n - its sample size
-p <- nrow(R) # the choice of dataset defines p - its number of variables
+# R <- cognitive # the choice of the dataset in ui.R
+# k <- 3 # the choice of the number of factors to retain from ui.R
+# n.obs <- 600 # choice of the dataset defines  n - its sample size
+# p <- nrow(R) # the choice of dataset defines p - its number of variables
 
 
 
