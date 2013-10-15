@@ -8,6 +8,7 @@ library(GPArotation)
 
 data(Harman)
 
+
 # Harman.Holzinger: 9 x 9 correlation matrix of cognitive ability tests, N = 696.
 cognitive <- Harman.Holzinger
 n.cognitive <- 696
@@ -59,6 +60,11 @@ rownames(physical) <- vars.physycal
 n.physical <- 305
 p.physical <- nrow(physical)
 
+
+Harman74<-as.matrix(datasets::Harman74.cor$cov)
+
+data(Thurstone)
+Thurstone<-Thurstone 
 
 
 # rm(list=setdiff(ls(), c("cognitive", "emotional", "physical",

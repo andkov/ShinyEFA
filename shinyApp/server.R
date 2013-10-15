@@ -6,6 +6,7 @@ library(psych)
 library(plotrix)
 library(sem)
 library(stats)
+library(corrplot)
 
 # uploaded <- reactive(data[data$x == input$file1, ])
 # Loads three classic datasets from 'psych' package by William Revelle, http://cran.r-project.org/web/packages/psych/
@@ -58,6 +59,7 @@ shinyServer( function(input, output) {
            "Uploaded Data"=uploaded
     )
   })
+
 # Dataset description
   datasetDescription <- reactive({
     switch(EXPR=input$dataset,
@@ -124,10 +126,10 @@ shinyServer( function(input, output) {
   })
 
 ####        OUTPUT ####
-# some description
-  output$somedscr <- renderPrint ({
-    print("Some Description")
-  })
+# # some description
+#   output$somedscr <- renderPrint ({
+#     print("Some Description")
+#   })
 
 # data description
   output$dscr.data <- renderPrint ({
@@ -140,14 +142,27 @@ shinyServer( function(input, output) {
   output$dscr.tabset <- renderPrint({
     print(c("Description of the current tabset"))
   }) 
-#  correlelogram 
-  output$corrgram <- renderPlot({
+#  correlelogram for observed variables
+  output$corrgramX <- renderPlot({
     corrgram(datasetInput(), 
              upper.panel=panel.conf, 
              lower.panel=panel.pie, 
              type="cor", order=TRUE
              )
   }) 
+#  correlelogram for observed variables
+output$corrgramF <- renderPlot({
+  # Reactive code
+  R <- datasetInput() # the choice of the dataset in ui.R
+  k <- input$k # the choice of the number of factors to retain from ui.R
+  n.obs <- n()  # choice of the dataset defines  n - its sample size
+  p <- p() # the choice of dataset defines p - its number of variables
+  source("rotationDecision.R",local=TRUE) # input$rotation -> factanla -> GPArotation
+  graphToShow <-     corrplot(Phi, method="shade",
+                              addCoef.col="black",addcolorlabel="no",order="AOE")
+  print(graphToShow) #Print that graph.
+  
+}) 
 # eigen plots
   output$eigens <- renderPlot({
     R <- datasetInput()
