@@ -159,6 +159,7 @@ inputDatavars <- reactive({
     #corrplot.mixed(datasetInput(), lower = "pie", upper = "number", addgrid.col="gray19")
     
     corrplotCustom(datasetInput(), order="AOE", lower="pie", upper="number", 
+                   title="Correlation Among Observed Variables", line=-1, 
                    tl.col="black", addCoef.col="black", cl.cex=1.7)
   }) 
 #  correlelogram for factors
@@ -178,31 +179,27 @@ inputDatavars <- reactive({
                    title="Correlation Among Factors", line=-1, 
                    tl.col="black", addCoef.col="black", cl.cex=1, )
   }) 
-  FA.StatsGG <- function(Correlation.Matrix,n.obs,n.factors,conf=.90,
-                         maxit=1000,RMSEA.cutoff=NULL,
-                         main="RMSEA Plot",sub=NULL){
+  FA.StatsGG <- function(Correlation.Matrix, n.obs, n.factors, conf=.90, maxit=1000, RMSEA.cutoff=NULL, main="RMSEA Plot", sub=NULL) {
+    #This function is a ggplot2 adaption for the function written by James H. Steiger (2013): Advanced Factor Functions V1.05  2013/03/20
     runs <- length(n.factors)  
     R <- Correlation.Matrix
     maxfac <- max(n.factors)
-    res <- matrix(NA,runs,8)
+    res <- matrix(NA, runs,8)
     roots <- eigen(R)$values
-    for(i in 1:runs){
-      output <- factanal(covmat=R,n.obs=n.obs,factors=n.factors[i],maxit=maxit)
+    for( i in 1:runs ) {
+      output <- factanal(covmat=R, n.obs=n.obs, factors=n.factors[i], maxit=maxit)
       X2 <- output$STATISTIC
       df <- output$dof
-      ci <- rmsea.ci(X2,df,n.obs,conf)
+      ci <- rmsea.ci(X2, df ,n.obs,conf)
       pvar <- sum(roots[1:n.factors[i]])
-      v <- c(n.factors[i],pvar,X2,df,1-pchisq(X2,df),ci$Point.Estimate,
-             ci$Lower.Limit,ci$Upper.Limit)
-      
-      res[i,] <- v
+      v <- c(n.factors[i], pvar, X2, df, 1-pchisq(X2,df), ci$Point.Estimate, ci$Lower.Limit, ci$Upper.Limit)      
+      res[i, ] <- v
     }
     colnames(res)=c("Factors","Cum.Eigen","Chi-Square","Df","p.value", "RMSEA.Pt","RMSEA.Lo","RMSEA.Hi")
     ds <- data.frame(FactorID=n.factors, Rmsea=res[,6], Lower=res[,7], Upper=res[,8])
     g <- ggplot(ds, aes(x=FactorID, y=Rmsea, ymin=Lower, ymax=Upper)) +
-      annotate("rect", ymax=RMSEA.cutoff, ymin=-Inf, xmin=-Inf, xmax=Inf, fill="#F4A58255") +#rgb(1, 0, 0, alpha=.1,maxColorValue=1)) +
+      annotate("rect", ymax=RMSEA.cutoff, ymin=-Inf, xmin=-Inf, xmax=Inf, fill="#F4A58255") +
       geom_line(size=1.5, color="#0571B0", na.rm = TRUE) +
-#       geom_point(size=5, color="#92C5DE", na.rm = TRUE) +
       geom_errorbar(width=0.05, size=1.5, color="#92C5DE") +
       scale_x_continuous(breaks=n.factors) +
       scale_y_continuous(expand=c(0,0)) + 
@@ -218,7 +215,8 @@ inputDatavars <- reactive({
     
     return(res)
   }
-  Scree.PlotGG <- function(R, main="Scree Plot",sub=NULL){
+  Scree.PlotGG <- function(R, main="Scree Plot", sub=NULL){
+    #This function is a ggplot2 adaption for the function written by James H. Steiger (2013): Advanced Factor Functions V1.05  2013/03/20
     roots <- eigen(R)$values
     x <- 1:dim(R)[1]    
     ds <- data.frame(x=x, roots=roots)
