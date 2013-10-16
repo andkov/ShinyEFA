@@ -53,7 +53,7 @@ library(GPArotation)
         # tabsetPanel
         {tabsetPanel(id="tabcur",
               tabPanel("Data",id="tabData", 
-                      imageOutput("datavars", width = "100%", height = "400px")),
+                      imageOutput("datavars", width = "100%", height = "700px")),
               tabPanel("Correlations",id="tabCorrelations", 
                              plotOutput("corrgramX", width="90%", height="800px"), 
                              h5(textOutput("dscr.data2"))),

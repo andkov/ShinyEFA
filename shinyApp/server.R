@@ -55,8 +55,7 @@ shinyServer( function(input, output) {
 #            "Harman74"=dscr.Harman74,
            "Thurstone"=dscr.Thurstone
     )    
-  })
-
+  }) # datasetDescription
 # Number of observed variables
   p <- reactive({
     switch(EXPR=input$dataset,
@@ -67,7 +66,7 @@ shinyServer( function(input, output) {
            "Thurstone"=p.Thurstone,
            "Uploaded Data"=p.uploaded
     )    
-  })
+  }) # p
 # Sample size
   n <- reactive({
     switch(EXPR=input$dataset,
@@ -78,7 +77,7 @@ shinyServer( function(input, output) {
            "Thurstone"=n.Thurstone,
            "Uploaded Data"=n.uploaded
     )    
-  })
+  }) # n
 # Rotation
   rotationInput <- reactive({
     switch(EXPR=input$rotation,
@@ -90,7 +89,7 @@ shinyServer( function(input, output) {
            cfT="cfT",
            cfQ="cfQ"
     )    
-  })
+  }) # rotationInput
 # # What tabset is it?
   currentTabset <- reactive({
     print(input$tabcur)
@@ -104,22 +103,22 @@ shinyServer( function(input, output) {
            "Table"=          "FApyramid_L_03.png"
          
     #Add the other tab names
-    )
-  )} # currentTabset
+   
+  )}) # currentTabset
              
-  # What description image should go on Data tab?
-  inputDatavars <- reactive({
-      switch(EXPR=input$dataset,
-             "Cognitive Abilities"="cognitive_03.png"
-#              ,
-#              "Emotional Traits"=image.emotional,
-#              "Physical Measures"=image.physical,
-#              "Thurstone"=image.Thurstone,
-#              "Uploaded Data"=uploaded
-      )
-    }) # inputDatavars
+
+inputDatavars <- reactive({
+  switch(EXPR=input$dataset,
+         "Cognitive Abilities"="cognitive_03.png",
+         "Emotional Traits"="cognitive_03.png",
+         "Physical Measures"="cognitive_03.png",
+         #            "Harman74"=dscr.Harman74,
+         "Thurstone"="cognitive_03.png"
+  )    
+}) # datasetDescription
     
   
+
 
 ####        OUTPUT ####
 # # some description
