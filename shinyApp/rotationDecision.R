@@ -36,8 +36,7 @@
     if( is.null(Phi)) {Phi<-diag(k)} else{Phi}
     colnames(Phi) <- paste0("F", 1:k)
     rownames(Phi) <- paste0("F", 1:k)    
-    Phi
-   
+    Phi   
   } 
   else if( input$rotation %in% c("cfT","cfQ") ) { 
     A <- stats::factanal(factors = k, covmat=R, rotation="none", control=list(rotate=list(normalize=TRUE)))

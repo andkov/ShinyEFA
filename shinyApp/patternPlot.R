@@ -13,8 +13,11 @@ fpmFunction <- function( FPM.matrix, mainTitle=NULL ) {
   dsFORp <- plyr::rename(dsFORp, replace=c(Var1="Variable", Var2="Factor", value="Loading"))
   dsFORp$Positive <- ifelse(dsFORp$Loading >= 0, "Positive", "Negative") #Or see Recipe 10.8
   dsFORp$LoadingAbs <- abs(dsFORp$Loading) # Long form
-  dsFORp$LoadingPretty <- round(abs(dsFORp$Loading), roundingDigits) # Long form
-#   dsFORp$VariablePretty <- gsub(pattern="_", replacement="\n", x=dsFORp$Variable)
+#   dsFORp$LoadingPretty <- round(abs(dsFORp$Loading), roundingDigits) # Long form
+  dsFORp$LoadingPretty <- round(dsFORp$Loading, roundingDigits) # Long form
+  
+  dsFORp$LoadingPretty <- paste0(ifelse(dsFORp$Loading>=0, "+", "-"), dsFORp$LoadingPretty)
+  #   dsFORp$VariablePretty <- gsub(pattern="_", replacement="\n", x=dsFORp$Variable)
   dsFORp$VariablePretty <- gsub(pattern=" ", replacement="\n", x=dsFORp$Variable)
   # colors <- c("FALSE"="darksalmon" ,"TRUE"="lightskyblue") # The colors for negative and positve values of factor loadings for ggplot
 

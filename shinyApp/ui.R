@@ -17,7 +17,7 @@ library(GPArotation)
 #                                 ,"Uploaded"
                                   )) # selectInput          
           , numericInput("k", label="Retain k factors:", value=3) # numericInput - "k" - number of retained factors
-          , radioButtons("rotation", "Choose the rotation Method" # radioButtons - "rotation" - select rotation method
+          , radioButtons("rotation", "Choose the rotation Method", # radioButtons - "rotation" - select rotation method
                        list(#"SVD eigenvectors"="svd",
                          "Unrotated"="none",
                          "Varimax (T)"="Varimax", 

@@ -584,6 +584,23 @@ Scree.Plot <- function(R,main="Scree Plot",sub=NULL){
   abline(h=1,lty=2,col="red")
   
 }
+# Scree.PlotGG <- function(R, main="Scree Plot",sub=NULL){
+#   roots <- eigen(R)$values
+#   x <- 1:dim(R)[1]
+# #   plot(x,roots,type="b",col='blue',ylab="Eigenvalue",
+# #        xlab="Component Number",main=main,sub=sub) 
+# #   abline(h=1,lty=2,col="red")
+#   
+#   ds <- data.frame(x=x, roots=roots)
+#   g <- ggplot(ds, aes(x=x, y=roots)) +
+#     geom_rect(ymax=1, ymin=-Inf, xmin=-Inf, xmax=Inf, fill="red") +
+#     geom_line(size=1.5, color="blue", na.rm = TRUE) +
+#     geom_point(size=5, color="darkblue", na.rm = TRUE) +
+#     labs(title=main, x="Component Number", y="Eigenvalue") +
+#     theme_bw()
+#   
+#   print(g)
+# }
 
 FindBifactor <- function(A,reps){
   warn=-1
