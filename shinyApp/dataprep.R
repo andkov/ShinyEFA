@@ -15,12 +15,12 @@ data(Harman)
 cognitive <- Harman.Holzinger
 n.cognitive <- 696
 p.cognitive <- nrow(cognitive)
-vars.cognitive <- c("Word Meaning",
-                     "Sentence Completion",
-                     "Odd Words",
-                     "Mixed Arithmetic",
+vars.cognitive <- c("Word.Mean",
+                     "Sent.Compl",
+                     "Odd.Words",
+                     "Mix.Arith",
                      "Remainders",
-                     "Missing Numbers",
+                     "Miss.Num.",
                      "Gloves",
                      "Boots",
                      "Hatchets")
@@ -55,7 +55,7 @@ vars.physical <- c("Height",
                  "Weight",
                  "Bitrochanteric diameter",
                  "Chest girth",
-                 "Chest width")
+                 "Ches width")
 vars.physycal <- colnames(Harman.8)
 colnames(physical) <- vars.physycal
 rownames(physical) <- vars.physycal

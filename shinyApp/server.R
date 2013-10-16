@@ -110,10 +110,9 @@ shinyServer( function(input, output) {
 inputDatavars <- reactive({
   switch(EXPR=input$dataset,
          "Cognitive Abilities"="cognitive_03.png",
-         "Emotional Traits"="cognitive_03.png",
-         "Physical Measures"="cognitive_03.png",
-         #            "Harman74"=dscr.Harman74,
-         "Thurstone"="cognitive_03.png"
+         "Emotional Traits"="emotional_03.png",
+         "Physical Measures"="physical_03.png",
+         "Thurstone"="Thurstone_03.png"
   )    
 }) # datasetDescription
     
@@ -163,7 +162,7 @@ output$corrgramF <- renderPlot({
   source("rotationDecision.R",local=TRUE) # input$rotation -> factanla -> GPArotation
 #   graphToShow <-     corrplot(Phi, method="shade",
 #                               addCoef.col="black",addcolorlabel="no",order="AOE")
-  graphToShow <-  corrgram(cognitive, 
+  graphToShow <-  corrgram(Phi, 
                    upper.panel=panel.conf, 
                    lower.panel=panel.pie, 
                    type="cor", order=TRUE)

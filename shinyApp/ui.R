@@ -18,7 +18,8 @@ library(GPArotation)
        },# headerPanel
       
       # SIDEBAR #
-      {sidebarPanel(        
+      {sidebarPanel(
+        
           # selectInput - "dataset" - choose dataset
           {selectInput("dataset", "Choose a dataset:", 
                       choices = c("Cognitive Abilities", 
@@ -44,7 +45,10 @@ library(GPArotation)
           # sliderInput - "kappa" - value for Crawford-Ferguson
           {sliderInput("kappa","Value of kappa for Crawford-Ferguson:",
                       min=0, max=1, value=0, step=.05)
-          } # sliderInput          
+          } # sliderInput
+          , br()
+          , br()
+          ,img(src="clouds_03.png",height=500,width=500)
        )},# sidebarPanel
       
       # MAIN #
@@ -55,26 +59,28 @@ library(GPArotation)
               tabPanel("Data",id="tabData", 
                       imageOutput("datavars", width = "100%", height = "700px")),
               tabPanel("Correlations",id="tabCorrelations", 
-                             plotOutput("corrgramX", width="90%", height="800px"), 
-                             h5(textOutput("dscr.data2"))),
+                             plotOutput("corrgramX", width="90%", height="700px")),
               tabPanel("Eigens",id="tabEigens", 
-                       plotOutput("eigens", width="60%",height="600px")),
-              tabPanel("RMSEA",id="tabRMSEA", 
-                       plotOutput("RMSEA", width="60%", height="600px")),
+                       plotOutput("eigens", width="50%",height="380px"),
+                       plotOutput("RMSEA", width="50%", height="380px")),
+#               tabPanel("RMSEA",id="tabRMSEA", 
+#                        plotOutput("RMSEA", width="60%", height="600px")),
               tabPanel("Components",id="tabComponents", 
-                       plotOutput("patternPlotPCA", width="90%", height="850px")), 
+                       plotOutput("patternPlotPCA", width="90%", height="750px")), 
               tabPanel("Factors",id="tabFactors", 
-                       plotOutput("patternPlotFA", width="90%", height="750px")), 
-              tabPanel("CorrelationY",id="tabCorY", 
-                       plotOutput("corrgramF", width="100%", height="400px")),
+                       plotOutput("patternPlotFA", width="90%", height="750px"),
+                       br(),
+                       plotOutput("corrgramF", width="50%", height="200px")), 
+#               tabPanel("CorrelationY",id="tabCorY", 
+#                        plotOutput("corrgramF", width="100%", height="400px")),
 #                       tabPanel("Table",id="tabTable", tableOutput("patternMatrix")),
                      
               selected="Data"
-        )},# #Close tabsetPanel  
+        )}# #Close tabsetPanel  
         
-        # imageOutput
-        {imageOutput("PyramidImage", width="20%", height="80px")
-        } # imageOutput
+#         # imageOutput
+#         {imageOutput("PyramidImage", width="20%", height="80px")
+#         } # imageOutput
         
       )} # mainPanel  
       
