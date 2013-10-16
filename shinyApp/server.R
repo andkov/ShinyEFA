@@ -159,7 +159,7 @@ inputDatavars <- reactive({
     #corrplot.mixed(datasetInput(), lower = "pie", upper = "number", addgrid.col="gray19")
     
     corrplotCustom(datasetInput(), order="AOE", lower="pie", upper="number", 
-                   tl.col="black", addCoef.col="black", cl.cex=2)
+                   tl.col="black", addCoef.col="black", cl.cex=1.7)
   }) 
 #  correlelogram for factors
   output$corrgramF <- renderPlot({
