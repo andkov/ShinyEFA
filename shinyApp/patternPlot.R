@@ -63,15 +63,16 @@ fpmFunction <- function( FPM.matrix, mainTitle=NULL ) {
     theme(axis.text.x=element_text(color="gray50", size=axisTextFontSize, vjust=1.3)) + #(eg, V1, V2,...)
     theme(axis.text.y=element_text(color="gray50", size=axisTextFontSize)) + #(eg, 0.5, 1.0)
     theme(strip.text.y=element_text(angle=0, size=stripSize)) + 
-    theme(legend.text=element_text(size=legendTextFontSize))
+    theme(legend.position="blank")
+#     theme(legend.text=element_text(size=legendTextFontSize))
   
-  if( k < p ) { #If there's space in the lower right corner of the plot area, then use it.
-    pp <- pp + theme(legend.position=c(1, 0), legend.justification=c(1, 0)) 
-    pp <- pp + theme(legend.background=element_rect(fill="gray70"))
-  }
-  else { #Otherwise, put it outside the plot area.
-    pp <- pp + theme(legend.position="left")
-  } 
+#   if( k < p ) { #If there's space in the lower right corner of the plot area, then use it.
+#     pp <- pp + theme(legend.position=c(1, 0), legend.justification=c(1, 0)) 
+#     pp <- pp + theme(legend.background=element_rect(fill="gray70"))
+#   }
+#   else { #Otherwise, put it outside the plot area.
+#     pp <- pp + theme(legend.position="left")
+#   } 
 
   return( pp )
 }
