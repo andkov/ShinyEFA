@@ -8,18 +8,6 @@ library(sem)
 library(stats)
 library(corrplot)
 
-# uploaded <- reactive(data[data$x == input$file1, ])
-# Loads three classic datasets from 'psych' package by William Revelle, http://cran.r-project.org/web/packages/psych/
-# source("dataprep.R") # begins with rm(list=ls(all=TRUE))
-# loads custom funtions by James S. Steier. Visit www.statpower.net for description and download
-# source(file.path(getwd(), "sourced", "Steiger R library functions.txt"))
-# source(file.path(getwd(), "sourced", "AdvancedFactorFunctions_CF.R"))
-
-# Description of the three datasets from the "psych" package documentation, http://cran.r-project.org/web/packages/psych/psych.pdf
-# dscr.cognitive <- "The nine psychological variables from Harman (1967, p 244) are taken from unpublished class notes of K.J. Holzinger with 696 participants." 
-# dscr.emotional <- "Eight emotional variables are taken from Harman (1967, p 164) who in turn adapted them from Burt (1939). They are said be from 172 normal children aged nine to twelve. As pointed out by Jan DeLeeuw, the Burt data set is a subset of 8 variables from the original 11 reported by Burt in 1915. That matrix has the same problem."
-# dscr.physical <- "The Eight Physical Variables problem is taken from Harman (1976) and represents the correlations between eight physical variables for 305 girls. The two correlated clusters represent four measures of lankiness and then four measures of stockiness. The original data were selected from 17 variables reported in an unpublished dissertation by Mullen (1939)."
-
 # # Descriptions of the tabsets
 # dscr.R<-c("Correlogram of the observed variables")
 # dscr.eigens<- c("Eigenvalues from the diagonal of D in VDV'")
@@ -34,12 +22,6 @@ dscr.Thurstone<- "Thurstone, L.L. (1947). Multiple Factor Analysis. Chicago: Uni
 # Define server logic required to summarize and view the selected dataset
 shinyServer( function(input, output) {
 ####        INPUT       ####
-
-# if there is an uploaded file
-# load it into object uploaded.data
-# and execute source(dataprep2), which contains code for extra dataset
-# if not, source (dataprep), the original data prep
-
 
 # Creates the reactive object contaning the strings of dataset names to be used later
   dsTag <- reactive({
@@ -62,7 +44,7 @@ shinyServer( function(input, output) {
            "Thurstone"=Thurstone,
            "Uploaded Data"=uploaded
     )
-  })
+  }) # datasetInput
 
 # Dataset description
   datasetDescription <- reactive({
@@ -74,18 +56,7 @@ shinyServer( function(input, output) {
            "Thurstone"=dscr.Thurstone
     )    
   })
-# # Tabset description
-# tabsetDescription <- c("The description of the current tabset")
-# tabsetDescription <- reactive({
-#   switch(EXPR=input$rotation,
-#          "SVD eigenvectors"=dscr.cognitive,
-#          "Unrotated"=dscr.,
-#          "Quartimax"="quartimax", # 1953
-#          "Quartimin"="quartimin", # 1953
-#          "Varimax"="varimax", # 1958
-#          "Promax"="promax"  # 1964
-#   )    
-# })
+
 # Number of observed variables
   p <- reactive({
     switch(EXPR=input$dataset,
@@ -130,10 +101,25 @@ shinyServer( function(input, output) {
            "RMSEA"=          "FApyramid_D_03.png",
            "Components"=     "FApyramid_V_03.png",
            "Factors"=        "FApyramid_L_03.png",
-           "Table"=          "FApyramid_L_03.png" 
+           "Table"=          "FApyramid_L_03.png"
+         
     #Add the other tab names
     )
-  })
+  )} # currentTabset
+             
+  # What description image should go on Data tab?
+  inputDatavars <- reactive({
+      switch(EXPR=input$dataset,
+             "Cognitive Abilities"="cognitive_03.png"
+#              ,
+#              "Emotional Traits"=image.emotional,
+#              "Physical Measures"=image.physical,
+#              "Thurstone"=image.Thurstone,
+#              "Uploaded Data"=uploaded
+      )
+    }) # inputDatavars
+    
+  
 
 ####        OUTPUT ####
 # # some description
@@ -141,12 +127,20 @@ shinyServer( function(input, output) {
 #     print("Some Description")
 #   })
 
+
+# dataset description
+output$datavars <- renderImage({
+  filePath <- inputDatavars()
+  list(src=file.path(getwd(), "images", filePath), alt="Description of the dataset")
+  #    list(src=file.path(getwd(), "images/FApyramid_03.png"), alt="Matrix decomposition options")
+}, deleteFile=FALSE)
+
 # data description
   output$dscr.data <- renderPrint ({
     cat(datasetDescription())
   })
   output$dscr.data2 <- renderPrint ({
-    print("ssssssss2222")
+    cat(datasetDescription())
   })
 # tabset description
   output$dscr.tabset <- renderPrint({
@@ -168,8 +162,13 @@ output$corrgramF <- renderPlot({
   n.obs <- n()  # choice of the dataset defines  n - its sample size
   p <- p() # the choice of dataset defines p - its number of variables
   source("rotationDecision.R",local=TRUE) # input$rotation -> factanla -> GPArotation
-  graphToShow <-     corrplot(Phi, method="shade",
-                              addCoef.col="black",addcolorlabel="no",order="AOE")
+#   graphToShow <-     corrplot(Phi, method="shade",
+#                               addCoef.col="black",addcolorlabel="no",order="AOE")
+  graphToShow <-  corrgram(cognitive, 
+                   upper.panel=panel.conf, 
+                   lower.panel=panel.pie, 
+                   type="cor", order=TRUE)
+  
   print(graphToShow) #Print that graph.
   
 }) 
@@ -264,9 +263,9 @@ output$patternMatrix <- renderTable({
     else if( input$rotation=="promax" ) { 
       A <- stats::factanal(factors = k, covmat=R, 
                    rotation="none", control=list(rotate=list(normalize=TRUE)))
-      FPM <- promax(A, pow)$loadings
-#       A <- GPromax(A$loadings, pow=3)
-#       FPM <- A$Lh # FPM - Factor Pattern Matrix
+#       FPM <- promax(A, pow)$loadings
+      A <- GPromax(A$loadings, pow=3)
+      FPM <- A$Lh # FPM - Factor Pattern Matrix
       FPM <- cbind(FPM, matrix(numeric(0), p, p-k)) # appends empty columns to have p columns
       colnames(FPM) <- paste0("F", 1:p) # renames for better presentation in tables and graphs
       FPM # THE OUTPUT
