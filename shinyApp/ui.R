@@ -1,4 +1,3 @@
-# http://rstudio.github.io/shiny/tutorial/#reactivity - UI
 library(shiny)
 library(psych)
 library(corrgram)
@@ -29,11 +28,9 @@ library(GPArotation)
                          "Crawford-Ferguson (Q)"="cfQ"))
            }, #Close radioButtons          
           {sliderInput("kappa","Value of kappa for Crawford-Ferguson:",min=0, max=1, value=0, step=.05)} # sliderInput - "kappa" - value for Crawford-Ferguson
-#           , br()
-#           , br()
-#           ,img(src="clouds_03.png",height=500,width=500)
-          , imageOutput("PyramidImage", width="100%", height="80px")
-#           , br()
+          , br()
+          , br()
+          , imageOutput("PyramidImage", width="100%")
        )},# Close sidebarPanel
       
       # MAIN #

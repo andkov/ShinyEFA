@@ -94,13 +94,13 @@ shinyServer( function(input, output) {
   currentTabset <- reactive({
     print(input$tabcur)
     switch(EXPR=input$tabcur,
-           "Data"=           "FApyramid_03.png", 
-           "Correlations"=   "FApyramid_R_03.png",
-           "Eigens"=         "FApyramid_D_03.png", 
-           "RMSEA"=          "FApyramid_D_03.png",
-           "Components"=     "FApyramid_V_03.png",
-           "Factors"=        "FApyramid_L_03.png",
-           "Table"=          "FApyramid_L_03.png"
+           "Data"=           "clouds_03.png", 
+           "Correlations"=   "clouds_R_03.png",
+           "Eigens"=         "clouds_D_03.png", 
+           "RMSEA"=          "clouds_D_03.png",
+           "Components"=     "clouds_V_03.png",
+           "Factors"=        "clouds_L_03.png",
+           "Table"=          "clouds_L_03.png"
          
     #Add the other tab names
    
@@ -129,12 +129,7 @@ inputDatavars <- reactive({
 # dataset description
 output$datavars <- renderImage({
   filePath <- inputDatavars()
-  list(src=file.path(getwd(), "images", filePath), alt="Description of the dataset"
-  #    list(src=file.path(getwd(), "images/FApyramid_03.png"), alt="Matrix decomposition options")
-  ,contentType = 'image/png',
-  width = 400,
-  height = 100
-  )
+  list(src=file.path(getwd(), "images", filePath), alt="Description of the dataset")
 }, deleteFile=FALSE)
 
 # data description
@@ -190,14 +185,10 @@ output$corrgramF <- renderPlot({
   })
 
 # Pyramid Image
- output$PyramidImage <- renderImage({
-   #print(currentTabset())
-   filePath <- currentTabset()
-   #    list(src=file.path(getwd(), "images", filePath), alt="Matrix decomposition options")
-      list(src=file.path(getwd(), "images", "clouds_03.png"), alt="Matrix decomposition options")
-#    img(src=file.path(getwd(), "images", filePath),height=500,width=500)
-#    img(src="clouds_03.png",height=500,width=500)
- }, deleteFile=FALSE, )
+  output$PyramidImage <- renderImage({
+    filePath <- currentTabset()
+    list(src=file.path(getwd(), "images", filePath), alt="Matrix decomposition options")
+  }, deleteFile=FALSE )
 
  output$patternPlotPCA <- renderPlot({  
     # Reactive code
@@ -211,7 +202,7 @@ output$corrgramF <- renderPlot({
     FPM <- cbind(FPM, matrix(numeric(0), p, p-k)) # appends empty columns to have p columns
     rownames(FPM) <- rownames(datasetInput())
     colnames(FPM) <- paste0("V", 1:p) # V, not F because these are components, not factors
-#     FPM
+
     # output
     source("patternPlot.R", local=TRUE) #Defines the function to produce a graph; usus FMP to create ggplot
     graphToShow <- fpmFunction(FPM.matrix=FPM, mainTitle=NULL
