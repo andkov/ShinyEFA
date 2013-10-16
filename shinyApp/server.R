@@ -129,8 +129,12 @@ inputDatavars <- reactive({
 # dataset description
 output$datavars <- renderImage({
   filePath <- inputDatavars()
-  list(src=file.path(getwd(), "images", filePath), alt="Description of the dataset")
+  list(src=file.path(getwd(), "images", filePath), alt="Description of the dataset"
   #    list(src=file.path(getwd(), "images/FApyramid_03.png"), alt="Matrix decomposition options")
+  ,contentType = 'image/png',
+  width = 400,
+  height = 100
+  )
 }, deleteFile=FALSE)
 
 # data description
@@ -189,9 +193,11 @@ output$corrgramF <- renderPlot({
  output$PyramidImage <- renderImage({
    #print(currentTabset())
    filePath <- currentTabset()
-   list(src=file.path(getwd(), "images", filePath), alt="Matrix decomposition options")
-#    list(src=file.path(getwd(), "images/FApyramid_03.png"), alt="Matrix decomposition options")
- }, deleteFile=FALSE)
+   #    list(src=file.path(getwd(), "images", filePath), alt="Matrix decomposition options")
+      list(src=file.path(getwd(), "images", "clouds_03.png"), alt="Matrix decomposition options")
+#    img(src=file.path(getwd(), "images", filePath),height=500,width=500)
+#    img(src="clouds_03.png",height=500,width=500)
+ }, deleteFile=FALSE, )
 
  output$patternPlotPCA <- renderPlot({  
     # Reactive code
