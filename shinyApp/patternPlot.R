@@ -1,13 +1,13 @@
 
 # fpmFunction is used to create output$ objects in server.R
-fpmFunction <- function( FPM.matrix, mainTitle=NULL ){ 
-  
-  roundingDigits <- 2 #Let the user define?
-  stripSize <- 24  #Let the user define?
+fpmFunction <- function( FPM.matrix, mainTitle=NULL ) {   
+  roundingDigits <- 2 #Let the caller define in the future (especially with observed values that aren't close to 1.0).
+  stripSize <- 24  #Let the caller define in the future?
   valuelabelSize <- 7 # the values of the factor loadings
   axisTitleFontSize <- 18
   axisTextFontSize <- 18
-  # output
+  legendTextFontSize <- 18
+  
   # Data prep for ggplot
   dsFORp <- reshape2::melt(FPM.matrix, id.vars=rownames(FPM.matrix))  ## id.vars declares MEASURED variables (as opposed to RESPONSE variable)
   dsFORp <- plyr::rename(dsFORp, replace=c(Var1="Variable", Var2="Factor", value="Loading"))
@@ -60,19 +60,15 @@ fpmFunction <- function( FPM.matrix, mainTitle=NULL ){
     theme(axis.text.x=element_text(color="gray50", size=axisTextFontSize, vjust=1.3)) + #(eg, V1, V2,...)
     theme(axis.text.y=element_text(color="gray50", size=axisTextFontSize)) + #(eg, 0.5, 1.0)
     theme(strip.text.y=element_text(angle=0, size=stripSize)) + 
-    theme(legend.text=element_text(size=20)) #Todo: declare '20' in some variable above
+    theme(legend.text=element_text(size=legendTextFontSize))
   
-{
-      if( k < p ) {
-        pp <- pp + theme(legend.position=c(1, 0), legend.justification=c(1, 0)) 
-        pp <- pp + theme(legend.background=element_rect(fill="gray70"))
-      }
-      else {
-        pp <- pp + theme(legend.position="left")
-      }
-    }
-  print(pp)
-  
-  
+  if( k < p ) { #If there's space in the lower right corner of the plot area, then use it.
+    pp <- pp + theme(legend.position=c(1, 0), legend.justification=c(1, 0)) 
+    pp <- pp + theme(legend.background=element_rect(fill="gray70"))
+  }
+  else { #Otherwise, put it outside the plot area.
+    pp <- pp + theme(legend.position="left")
+  } 
+
   return( pp )
 }
