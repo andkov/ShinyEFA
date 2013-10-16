@@ -159,6 +159,7 @@ inputDatavars <- reactive({
     #corrplot.mixed(datasetInput(), lower = "pie", upper = "number", addgrid.col="gray19")
     
     corrplotCustom(datasetInput(), order="AOE", lower="pie", upper="number", 
+                   title="Correlation Among Observed Variables", line=-1, 
                    tl.col="black", addCoef.col="black", cl.cex=2)
   }) 
 #  correlelogram for factors
@@ -168,12 +169,15 @@ inputDatavars <- reactive({
     n.obs <- n()  # choice of the dataset defines  n - its sample size
     p <- p() # the choice of dataset defines p - its number of variables
     source("rotationDecision.R", local=TRUE) # input$rotation -> factanla -> GPArotation
-    oldPar <- par(pty="s") #Set parameters for base graphics
-    corrgram(Phi,
-             upper.panel=panel.conf, 
-             lower.panel=panel.pie, #panel.pie, 
-             type="cor", order=TRUE)
-    par(oldPar) #Reset to the pre-existing graphic parameters
+#     oldPar <- par(pty="s") #Set parameters for base graphics
+#     corrgram(Phi,
+#              upper.panel=panel.conf, 
+#              lower.panel=panel.pie, #panel.pie, 
+#              type="cor", order=TRUE)
+#     par(oldPar) #Reset to the pre-existing graphic parameters
+    corrplotCustom(Phi, order="AOE", lower="pie", upper="number", 
+                   title="Correlation Among Factors", line=-1, 
+                   tl.col="black", addCoef.col="black", cl.cex=1, )
   }) 
   FA.StatsGG <- function(Correlation.Matrix,n.obs,n.factors,conf=.90,
                          maxit=1000,RMSEA.cutoff=NULL,
