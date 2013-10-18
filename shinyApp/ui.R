@@ -40,9 +40,10 @@ library(GPArotation)
                    plotOutput("RMSEA", width="50%", height="380px")),
           tabPanel("Components", id="tabComponents", plotOutput("patternPlotPCA", width="90%", height="750px")), 
           tabPanel("Factors", id="tabFactors", 
-                   plotOutput("patternPlotFA", width="90%", height="750px"),
-                   br(),
-                   plotOutput("corrgramF", width="50%", height="200px")), 
+                 plotOutput("patternPlotFA", width="90%", height="750px"),
+                 br(),
+                 plotOutput("corrgramF", width="50%", height="200px")), 
+          tabPanel("Documentation", id="tabDocumentation", htmlOutput(outputId="documentation")), 
           selected="Data"
         )} #Close tabsetPanel  
       )} #Close mainPanel        

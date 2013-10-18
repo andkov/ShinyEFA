@@ -1,5 +1,4 @@
-ShinyEFA
-========
+<!-- Don't forget to update these two files simultaneously: /README.md and /shinyApp/documentation.md -->
 
 ShinyEFA is a web application created with [R](http://cran.rstudio.com/) and [Shiny](http://www.rstudio.com/shiny/). It is created and maintained by [Andrey Koval](http://www.statcanvas.net) (Vanderbuilt University) and [Will Beasley](http://www.linkedin.com/profile/view?id=48089881&trk=nav_responsive_tab_profile) (University of Oklahoma Health Sciences Center). 
 
@@ -13,3 +12,4 @@ The application is hosted on RStudio's Glimmer server [http://glimmer.rstudio.co
  * Browne, M. W. (2001). An overview of analytic rotation in exploratory factor analysis. Multivariate Behavioral Research, 36(1), 111-150.
  * Crawford, C. B., & Ferguson, G. A. (1970). A general rotation criterion and its use in orthogonal rotation. Psychometrika, 35(3), 321-332. 
  * Jennrich, R. I. (2004). Rotation to simple loadings using component loss functions: The orthogonal case. Psychometrika, 69(2), 257-273
+

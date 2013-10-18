@@ -94,7 +94,8 @@ shinyServer( function(input, output) {
            "RMSEA"=          "clouds_D_03.png",
            "Components"=     "clouds_V_03.png",
            "Factors"=        "clouds_L_03.png",
-           "Table"=          "clouds_L_03.png"   
+           "Table"=          "clouds_L_03.png",
+           "Documentation"=          "clouds_03.png"   
   )}) # imageFileName             
 
 inputDatavars <- reactive({
@@ -121,10 +122,19 @@ inputDatavars <- reactive({
   output$dscr.data2 <- renderPrint ({
     cat(datasetDescription())
   })
-# tabset description
+  # tabset description
   output$dscr.tabset <- renderPrint({
     print(c("Description of the current tabset"))
   }) 
+  # tabset description
+  output$documentation <- renderUI({
+    includeMarkdown("documentation.md") #I think this version looks a little better (-Will)
+#     includeHTML("documentation.html")
+  }) 
+#   output$documentation <- renderPrint({
+#     description <- "ShinyEFA is a web application created with R package Shiny. It is created and maintained by Andrey Koval (hyperlink on name: www.statcanvas.net) and Will Beasley (Hyperlink on name). ShinyEFA uses datasets from psych package by William Revelle (http://cran.r-project.org/web/packages/psych/psych.pdf) and gradient projection algorithms by Bernaards and Jennrich (http://www.stat.ucla.edu/research/gpa/). The original factor pattern matrices are obtained from an unrotated solution of the factanal function of the stats packages. Advanced factor functions by James Steiger are used for RMSEA diagnostic (www.statpower.net)." 
+#     cat(description)
+#   }) 
   
 #   diagonalPanel <- function (x = 0.5, y = 0.5, txt, cex, font, srt, ...) {
 #     panel.txt( x, y, txt, font, srt, cex = 3, ...)
