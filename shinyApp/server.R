@@ -9,6 +9,8 @@ library(stats)
 library(corrplot)
 library(corrgram)
 
+
+
 # # Descriptions of the tabsets
 source(file.path(getwd(), "sourced", "SteigerRLibraryFunctions.txt"))
 source(file.path(getwd(), "sourced", "AdvancedFactorFunctions_CF.r"))
@@ -19,6 +21,14 @@ shinyServer( function(input, output) {
   ########################################
   #### INPUT ####
   ########################################
+  
+#   Code snippet from https://groups.google.com/forum/?fromgroups=#!topic/shiny-discuss/bAGJ0-CO-f4   
+#   The data is copied as a temp file. If you want to keep it, you have to copy it somewhere more permanent. In your server.R you could do something like:
+    observe({
+      if (!is.null(input$file1)) {
+        file.copy(input$file1$datapath, tempfile(tmpdir="~/uploads/", fileext=".csv"))
+      }
+    })
 # Creates the reactive object contaning the strings of dataset names to be used later
   dsTag <- reactive({
     switch(EXPR=input$dataset,
