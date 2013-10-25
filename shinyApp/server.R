@@ -220,7 +220,7 @@ inputDatavars <- reactive({
     g <- ggplot(ds, aes(x=FactorID, y=Rmsea, ymin=Lower, ymax=Upper)) +
       annotate("rect", ymax=RMSEA.cutoff, ymin=-Inf, xmin=-Inf, xmax=Inf, fill="#F4A58255") +
       geom_line(size=1.5, color="#0571B0", na.rm = TRUE) +
-      geom_errorbar(width=0.05, size=1.5, color="#92C5DE") +
+      geom_errorbar(width=0.05, size=1.5, color="#92C5DE", na.rm = TRUE) +
       scale_x_continuous(breaks=n.factors) +
       scale_y_continuous(expand=c(0,0)) + 
       labs(title=main, x="Number of Factors", y="RMSEA") +
