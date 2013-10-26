@@ -6,3 +6,5 @@ library(shiny)
 # setwd("~/ShinyEFA") #Will's Experimental Shiny server at home: http://lucky1304:8100/
 server <- (Sys.info()["nodename"] == "Lucky1304")
 shiny::runApp('shinyApp', launch.browser=!server)
+
+# shiny::runApp("ShinyApp")
