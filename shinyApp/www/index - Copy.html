@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<!-- These three scripts/links are automatic, don't change them !-->
+  <script src="shared/jquery.js" type="text/javascript"></script>
+  <script src="shared/shiny.js" type="text/javascript"></script>
+  <link href="../shared/shiny.css" rel="stylesheet" type="text/css">
+<!-- These scripts/links are custom, must be inside www folder !--> 
+  <link href="styles/efa.css" rel="stylesheet" type="text/css">
+</head>
+
+<body class="light blue smaller freestyle01">
+<div id="layout">
+
+
+	<div class="row smaller">
+		<div class="col c5 smaller">
+			<h1><a href="index.html">Dataskope on EFA</a></h1>
+		</div>
+		
+		<div class="col c9 alignright">
+			<p class="slogan">examining the shadows of abstractions</p>
+		</div>
+	</div>
+    
+    <div class="row"> <!-- row with 3 columns !-->
+         <div class="col c3 alignleft"> <!-- left sidebar !-->
+          <p>
+            <label>Distribution type:</label><br />
+            <select name="dist">
+              <option value="norm">Normal</option>
+              <option value="unif">Uniform</option>
+              <option value="lnorm">Log-normal</option>
+              <option value="exp">Exponential</option>
+            </select> 
+          </p>
+ 
+          <p>
+            <label>Number of observations:</label><br /> 
+            <input type="number" name="n" value="500" min="1" max="1000" />
+          </p>
+ 		</div> <!-- end of the left sidebar !-->
+ 
+ 		<div class="col c8" > <!-- central column !-->
+            <pre id="summary" class="shiny-text-output"></pre> 
+      
+            <div id="plot" class="shiny-plot-output" 
+                style="width: 100%; height: 400px"></div> 
+      
+            <div id="table" class="shiny-html-output"></div>
+		</div> <!-- end of central column !-->
+		
+        <div class="col img c3"> <!-- right sidebar !-->
+			<h3>Tabs:</h3>
+			<div class="col c3">
+            
+            </div>
+            	
+		</div><!-- end of right sidebar !-->
+        
+    </div> <!-- end of row with 3 columns !-->
+</div> <!-- close id="layout" !-->
+</body>
+
+</html>
