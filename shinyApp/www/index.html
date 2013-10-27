@@ -2,63 +2,36 @@
 <html>
 
 <head>
-	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<meta name="description" content="ShinyEFA is a web app for exploratory factor analysis" />
-	<meta name="keywords" content="visualization EFA factor analysis" />
-	<meta name="author" content="Koval and Beasley" />
-    
-	<link href='http://fonts.googleapis.com/css?family=Dosis' rel='stylesheet' type='text/css' />
-	<link rel="stylesheet" type="text/css" href="shiny.css" title="EFA under the DataSkope" media="all" />
-	<title>DataSkope:EFA</title>
-
   <script src="shared/jquery.js" type="text/javascript"></script>
   <script src="shared/shiny.js" type="text/javascript"></script>
   <!-  See http://www.w3.org/Style/Examples/011/firstcss.en.html -->
   <link href="../shared/shiny.css" rel="stylesheet" type="text/css">
-  
-  
-  
-  
 </head>
 
-<body class="light blue smaller freestyle01">
-	<div id="layout">
-  
-  		<div class="row smaller">
-            <div class="col c8 smaller">
-                <h1><a href="index.html">EFA under the dataskope</a></h1>
-            </div>
-		</div>
+<body>
+  <h1>HTML UI</h1>
  
- 		<div class="row"> <!-- row with 3 columns !-->
-            <div class="col c2 alignleft"><!-- side bar with selectors !-->
-                <p class="heading1">
-                <label>Distribution type:</label><br />
-                <select name="dist">
-                  <option value="norm">Normal</option>
-                  <option value="unif">Uniform</option>
-                  <option value="lnorm">Log-normal</option>
-                  <option value="exp">Exponential</option>
-                </select> 
-                </p>
-                 
-                <p> 
-                <label>Number of observations:</label><br /> 
-                <input type="number" name="n" value="500" min="1" max="1000" />
-                </p>
-            </div> <!-- end side bar with selectors !-->
-     
-            <div class="col c8"><!-- center column !-->
-                <pre id="summary" class="shiny-text-output"></pre> 
-          
-                <div id="plot" class="shiny-plot-output" 
-                style="width: 100%; height: 400px"></div> 
-                
-                <div id="table" class="shiny-html-output"></div>
-            </div> <!-- end of center column  !-->
-        </div> <!-- end of the row with 3 columns !-->
-	</div> <!-- end of id="layout" !-->   
-
+  <p class="heading1">
+    <label>Distribution type:</label><br />
+    <select name="dist">
+      <option value="norm">Normal</option>
+      <option value="unif">Uniform</option>
+      <option value="lnorm">Log-normal</option>
+      <option value="exp">Exponential</option>
+    </select> 
+  </p>
+ 
+  <p>
+    <label>Number of observations:</label><br /> 
+    <input type="number" name="n" value="500" min="1" max="1000" />
+  </p>
+ 
+  <pre id="summary" class="shiny-text-output"></pre> 
+ <div class="row">
+  <div id="plot" class="shiny-plot-output" 
+       style="width: 100%; height: 200px"></div> 
+ </div>
+  <div id="table" class="shiny-html-output"></div>
 </body>
 
 </html>
