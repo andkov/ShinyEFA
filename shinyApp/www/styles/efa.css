@@ -31,7 +31,7 @@ body.wider #layout {margin:40px auto 0; width:1366px;}
 /* Grid classes, fixed width, 960px with 12 columns */
 .col {float:left; margin:0 10px; overflow:hidden; float:left; display:inline;}
 .col img {max-width:100%;}
-.row {width:1260px; margin:20px auto 0; overflow:hidden;}
+.row {width:1440px; margin:20px auto 0; overflow:hidden;}
 .row .row {margin:0 -10px; width:auto;	display:inline-block;}
 .c1 {width:60px;}
 .c2 {width:140px;}
@@ -53,7 +53,7 @@ body.wider #layout {margin:40px auto 0; width:1366px;}
 
 
 /* Grid classes, fixed width, 1200px with 12 columns - add class="wider" to the <body> element to use this */
-body.wider .row {width:1280px;}
+body.wider .row {width:1440px;}
 body.wider .c1 {width:80px;}
 body.wider .c2 {width:180px;}
 body.wider .c3 {width:280px;}
