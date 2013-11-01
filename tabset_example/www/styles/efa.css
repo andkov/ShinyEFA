@@ -50,6 +50,8 @@ body.wider #layout {margin:40px auto 0; width:1440px;}
 .c15 {width:1180px;}
 .c16 {width:1260px;}
 .c17 {width:1340px;}
+.c18 {width:1440px;}
+
 
 
 /* Grid classes, fixed width, 1200px with 12 columns - add class="wider" to the <body> element to use this */

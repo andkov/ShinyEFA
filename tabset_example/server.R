@@ -31,13 +31,13 @@ shinyServer(function(input, output) {
          main=paste('r', dist, '(', n, ')', sep=''))
   })
   
-#   # Generate a summary of the data
-#   output$summary <- renderPrint({
-#     summary(data())
-#   })
+  # Generate a summary of the data
+  output$summary <- renderPrint({
+    summary(data())
+  })
   
-#   # Generate an HTML table view of the data
-#   output$table <- renderTable({
-#     data.frame(x=data())
-#   })
+  # Generate an HTML table view of the data
+  output$table <- renderTable({
+    data.frame(x=data())
+  })
 })
