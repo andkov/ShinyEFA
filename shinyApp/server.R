@@ -9,6 +9,8 @@ library(stats)
 library(corrplot)
 library(corrgram)
 
+
+
 # # Descriptions of the tabsets
 source(file.path(getwd(), "sourced", "SteigerRLibraryFunctions.txt"))
 source(file.path(getwd(), "sourced", "AdvancedFactorFunctions_CF.r"))
@@ -19,6 +21,14 @@ shinyServer( function(input, output) {
   ########################################
   #### INPUT ####
   ########################################
+  
+#   Code snippet from https://groups.google.com/forum/?fromgroups=#!topic/shiny-discuss/bAGJ0-CO-f4   
+#   The data is copied as a temp file. If you want to keep it, you have to copy it somewhere more permanent. In your server.R you could do something like:
+    observe({
+      if (!is.null(input$file1)) {
+        file.copy(input$file1$datapath, tempfile(tmpdir="~/uploads/", fileext=".csv"))
+      }
+    })
 # Creates the reactive object contaning the strings of dataset names to be used later
   dsTag <- reactive({
     switch(EXPR=input$dataset,
@@ -94,7 +104,8 @@ shinyServer( function(input, output) {
            "RMSEA"=          "clouds_D_03.png",
            "Components"=     "clouds_V_03.png",
            "Factors"=        "clouds_L_03.png",
-           "Table"=          "clouds_L_03.png"   
+           "Table"=          "clouds_L_03.png",
+           "Documentation"=          "clouds_03.png"   
   )}) # imageFileName             
 
 inputDatavars <- reactive({
@@ -121,10 +132,19 @@ inputDatavars <- reactive({
   output$dscr.data2 <- renderPrint ({
     cat(datasetDescription())
   })
-# tabset description
+  # tabset description
   output$dscr.tabset <- renderPrint({
     print(c("Description of the current tabset"))
   }) 
+  # tabset description
+  output$documentation <- renderUI({
+    includeMarkdown("documentation.md") #I think this version looks a little better (-Will)
+#     includeHTML("documentation.html")
+  }) 
+#   output$documentation <- renderPrint({
+#     description <- "ShinyEFA is a web application created with R package Shiny. It is created and maintained by Andrey Koval (hyperlink on name: www.statcanvas.net) and Will Beasley (Hyperlink on name). ShinyEFA uses datasets from psych package by William Revelle (http://cran.r-project.org/web/packages/psych/psych.pdf) and gradient projection algorithms by Bernaards and Jennrich (http://www.stat.ucla.edu/research/gpa/). The original factor pattern matrices are obtained from an unrotated solution of the factanal function of the stats packages. Advanced factor functions by James Steiger are used for RMSEA diagnostic (www.statpower.net)." 
+#     cat(description)
+#   }) 
   
 #   diagonalPanel <- function (x = 0.5, y = 0.5, txt, cex, font, srt, ...) {
 #     panel.txt( x, y, txt, font, srt, cex = 3, ...)
@@ -159,6 +179,7 @@ inputDatavars <- reactive({
     #corrplot.mixed(datasetInput(), lower = "pie", upper = "number", addgrid.col="gray19")
     
     corrplotCustom(datasetInput(), order="AOE", lower="pie", upper="number", 
+                   title="Correlation Among Observed Variables", line=-1, 
                    tl.col="black", addCoef.col="black", cl.cex=1.7)
   }) 
 #  correlelogram for factors
@@ -168,39 +189,38 @@ inputDatavars <- reactive({
     n.obs <- n()  # choice of the dataset defines  n - its sample size
     p <- p() # the choice of dataset defines p - its number of variables
     source("rotationDecision.R", local=TRUE) # input$rotation -> factanla -> GPArotation
-    oldPar <- par(pty="s") #Set parameters for base graphics
-    corrgram(Phi,
-             upper.panel=panel.conf, 
-             lower.panel=panel.pie, #panel.pie, 
-             type="cor", order=TRUE)
-    par(oldPar) #Reset to the pre-existing graphic parameters
+#     oldPar <- par(pty="s") #Set parameters for base graphics
+#     corrgram(Phi,
+#              upper.panel=panel.conf, 
+#              lower.panel=panel.pie, #panel.pie, 
+#              type="cor", order=TRUE)
+#     par(oldPar) #Reset to the pre-existing graphic parameters
+    corrplotCustom(Phi, order="AOE", lower="pie", upper="number", 
+                   title="Correlation Among Factors", line=-1, 
+                   tl.col="black", addCoef.col="black", cl.cex=1, )
   }) 
-  FA.StatsGG <- function(Correlation.Matrix,n.obs,n.factors,conf=.90,
-                         maxit=1000,RMSEA.cutoff=NULL,
-                         main="RMSEA Plot",sub=NULL){
+  FA.StatsGG <- function(Correlation.Matrix, n.obs, n.factors, conf=.90, maxit=1000, RMSEA.cutoff=NULL, main="RMSEA Plot", sub=NULL) {
+    #This function is a ggplot2 adaption for the function written by James H. Steiger (2013): Advanced Factor Functions V1.05  2013/03/20
     runs <- length(n.factors)  
     R <- Correlation.Matrix
     maxfac <- max(n.factors)
-    res <- matrix(NA,runs,8)
+    res <- matrix(NA, runs,8)
     roots <- eigen(R)$values
-    for(i in 1:runs){
-      output <- factanal(covmat=R,n.obs=n.obs,factors=n.factors[i],maxit=maxit)
+    for( i in 1:runs ) {
+      output <- factanal(covmat=R, n.obs=n.obs, factors=n.factors[i], maxit=maxit)
       X2 <- output$STATISTIC
       df <- output$dof
-      ci <- rmsea.ci(X2,df,n.obs,conf)
+      ci <- rmsea.ci(X2, df ,n.obs,conf)
       pvar <- sum(roots[1:n.factors[i]])
-      v <- c(n.factors[i],pvar,X2,df,1-pchisq(X2,df),ci$Point.Estimate,
-             ci$Lower.Limit,ci$Upper.Limit)
-      
-      res[i,] <- v
+      v <- c(n.factors[i], pvar, X2, df, 1-pchisq(X2,df), ci$Point.Estimate, ci$Lower.Limit, ci$Upper.Limit)      
+      res[i, ] <- v
     }
     colnames(res)=c("Factors","Cum.Eigen","Chi-Square","Df","p.value", "RMSEA.Pt","RMSEA.Lo","RMSEA.Hi")
     ds <- data.frame(FactorID=n.factors, Rmsea=res[,6], Lower=res[,7], Upper=res[,8])
     g <- ggplot(ds, aes(x=FactorID, y=Rmsea, ymin=Lower, ymax=Upper)) +
-      annotate("rect", ymax=RMSEA.cutoff, ymin=-Inf, xmin=-Inf, xmax=Inf, fill="#F4A58255") +#rgb(1, 0, 0, alpha=.1,maxColorValue=1)) +
+      annotate("rect", ymax=RMSEA.cutoff, ymin=-Inf, xmin=-Inf, xmax=Inf, fill="#F4A58255") +
       geom_line(size=1.5, color="#0571B0", na.rm = TRUE) +
-#       geom_point(size=5, color="#92C5DE", na.rm = TRUE) +
-      geom_errorbar(width=0.05, size=1.5, color="#92C5DE") +
+      geom_errorbar(width=0.05, size=1.5, color="#92C5DE", na.rm = TRUE) +
       scale_x_continuous(breaks=n.factors) +
       scale_y_continuous(expand=c(0,0)) + 
       labs(title=main, x="Number of Factors", y="RMSEA") +
@@ -215,7 +235,8 @@ inputDatavars <- reactive({
     
     return(res)
   }
-  Scree.PlotGG <- function(R, main="Scree Plot",sub=NULL){
+  Scree.PlotGG <- function(R, main="Scree Plot", sub=NULL){
+    #This function is a ggplot2 adaption for the function written by James H. Steiger (2013): Advanced Factor Functions V1.05  2013/03/20
     roots <- eigen(R)$values
     x <- 1:dim(R)[1]    
     ds <- data.frame(x=x, roots=roots)

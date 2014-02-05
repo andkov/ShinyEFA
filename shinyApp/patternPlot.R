@@ -49,8 +49,8 @@ fpmFunction <- function( FPM.matrix, mainTitle=NULL ) {
   
   # Graph definition
   pp <- ggplot(dsFORp, aes(x=Factor, y=LoadingAbs, fill=Positive, color=Positive, label=LoadingPretty)) +
-    geom_bar(stat="identity") +
-    geom_text(y=0, vjust=-.1,size=valuelabelSize) +
+    geom_bar(stat="identity", na.rm=T) +
+    geom_text(y=0, vjust=-.1,size=valuelabelSize, na.rm=T) +
     scale_color_manual(values=colorFont, guide="none") +
     scale_fill_manual(values=colorsFill) +
     #   scale_fill_discrete(h=c(0,360)+15, c=100, l=65, h.start=0, direction=1, na.value="grey50") + #http://docs.ggplot2.org/0.9.3/scale_hue.html

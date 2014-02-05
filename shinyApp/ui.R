@@ -34,15 +34,17 @@ library(GPArotation)
       {mainPanel(
         {tabsetPanel(id="tabcur",
           tabPanel("Data", id="tabData", imageOutput("datavars", width="100%", height="700px")),
-          tabPanel("Correlations", id="tabCorrelations", plotOutput("corrgramX", width="90%", height="700px")),
+          tabPanel("Correlations", id="tabCorrelations", plotOutput("corrgramX", width="90%", height="800px")),
           tabPanel("Eigens", id="tabEigens", 
-                   plotOutput("eigens", width="50%",height="380px"),
-                   plotOutput("RMSEA", width="50%", height="380px")),
-          tabPanel("Components", id="tabComponents", plotOutput("patternPlotPCA", width="90%", height="750px")), 
+                   plotOutput("eigens", width="50%",height="400px"),
+                   plotOutput("RMSEA", width="50%", height="400px")),
+          tabPanel("Components", id="tabComponents", 
+                 plotOutput("patternPlotPCA", width="70%", height="750px")), 
           tabPanel("Factors", id="tabFactors", 
-                   plotOutput("patternPlotFA", width="90%", height="750px"),
-                   br(),
-                   plotOutput("corrgramF", width="50%", height="200px")), 
+                 plotOutput("patternPlotFA", width="70%", height="750px"),
+#                  br(),
+                 plotOutput("corrgramF", width="50%", height="180px")), 
+          tabPanel("Documentation", id="tabDocumentation", htmlOutput(outputId="documentation")), 
           selected="Data"
         )} #Close tabsetPanel  
       )} #Close mainPanel        
