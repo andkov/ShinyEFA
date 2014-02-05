@@ -68,9 +68,11 @@ vars.Harman74<-colnames(Harman74)
 n.Harman74<-145
 p.Harman74<-nrow(Harman74)
 
+AthleticsData <- read.csv("http://statpower.net/Content/319SEM/Lecture%20Notes/AthleticsData.csv")
+
 #  from GPArotation, no information provided in the package
-data(Thurstone)
-Thurstone<-Thurstone 
+# data(Thurstone)
+Thurstone<-AthleticsData # Change AthleticData bakc to Thurstone 
 vars.Thurstone<-colnames(Thurstone)
 n.Thurstone<-200 # not sure of the number
 p.Thurstone<-nrow(Thurstone)
@@ -80,3 +82,5 @@ p.Thurstone<-nrow(Thurstone)
 #                        "vars.cognitive", "vars.emotional","vars.physical",
 #                        "n.cognitive", "n.emotional", "n.physical",
 #                        "p.cognitive", "p.emotional", "p.physical")))
+
+
