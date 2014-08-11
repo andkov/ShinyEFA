@@ -8,13 +8,14 @@ library(sem)
 library(stats)
 library(corrplot)
 library(corrgram)
+library(markdown)
 
 
 
 # # Descriptions of the tabsets
-source(file.path(getwd(), "sourced", "SteigerRLibraryFunctions.txt"))
-source(file.path(getwd(), "sourced", "AdvancedFactorFunctions_CF.r"))
-source("dataprep.R") # begins with rm(list=ls(all=TRUE)) 
+source("./shinyApp/sourced/SteigerRLibraryFunctions.txt")
+source("./shinyApp/sourced/AdvancedFactorFunctions_CF.r")
+source("./shinyApp/dataprep.R") # begins with rm(list=ls(all=TRUE)) 
 
 # Define server logic required to summarize and view the selected dataset
 shinyServer( function(input, output) {
@@ -123,7 +124,7 @@ inputDatavars <- reactive({
 # dataset description
   output$datavars <- renderImage({
     filePath <- inputDatavars()
-    list(src=file.path(getwd(), "images", filePath), alt="Description of the dataset")
+    list(src=file.path("./shinyApp/images", filePath), alt="Description of the dataset")
   }, deleteFile=FALSE)
 # data description
   output$dscr.data <- renderPrint ({
@@ -138,7 +139,7 @@ inputDatavars <- reactive({
   }) 
   # tabset description
   output$documentation <- renderUI({
-    includeMarkdown("documentation.md") #I think this version looks a little better (-Will)
+    includeMarkdown("./shinyApp/documentation.md") #I think this version looks a little better (-Will)
 #     includeHTML("documentation.html")
   }) 
 #   output$documentation <- renderPrint({
@@ -188,7 +189,7 @@ inputDatavars <- reactive({
     k <- input$k # the choice of the number of factors to retain from ui.R
     n.obs <- n()  # choice of the dataset defines  n - its sample size
     p <- p() # the choice of dataset defines p - its number of variables
-    source("rotationDecision.R", local=TRUE) # input$rotation -> factanla -> GPArotation
+    source("./shinyApp/rotationDecision.R", local=TRUE) # input$rotation -> factanla -> GPArotation
 #     oldPar <- par(pty="s") #Set parameters for base graphics
 #     corrgram(Phi,
 #              upper.panel=panel.conf, 
@@ -280,7 +281,7 @@ inputDatavars <- reactive({
 # Pyramid Image
   output$PyramidImage <- renderImage({
     filePath <- imageFileName()
-    list(src=file.path(getwd(), "images", filePath), alt="Matrix decomposition options")
+    list(src=file.path("./shinyApp/images", filePath), alt="Matrix decomposition options")
   }, deleteFile=FALSE )
 
  output$patternPlotPCA <- renderPlot({  
@@ -293,7 +294,7 @@ inputDatavars <- reactive({
     FPM <- cbind(FPM, matrix(numeric(0), p, p-k)) # appends empty columns to have p columns
     rownames(FPM) <- rownames(datasetInput())
     colnames(FPM) <- paste0("V", 1:p) # V, not F because these are components, not factors
-    source("patternPlot.R", local=TRUE) #Defines the function to produce a graph; usus FMP to create ggplot
+    source("./shinyApp/patternPlot.R", local=TRUE) #Defines the function to produce a graph; usus FMP to create ggplot
     graphToShow <- fpmFunction(FPM.matrix=FPM, mainTitle=NULL) #Call/execute the function defined above. # mainTitle="from output$patternPlotPCA"    # uncomment line to customize title
     print(graphToShow) #Print that graph.
   }) #Close patternPlotPCA
@@ -303,8 +304,8 @@ output$patternPlotFA <- renderPlot({
   k <- input$k # the choice of the number of factors to retain from ui.R
   n.obs <- n()  # choice of the dataset defines  n - its sample size
   p <- p() # the choice of dataset defines p - its number of variables
-  source("rotationDecision.R",local=TRUE) # input$rotation -> factanla -> GPArotation
-  source("patternPlot.R",local=TRUE) # uses FMP to create ggplot
+  source("./shinyApp/rotationDecision.R",local=TRUE) # input$rotation -> factanla -> GPArotation
+  source("./shinyApp/patternPlot.R",local=TRUE) # uses FMP to create ggplot
   graphToShow <- fpmFunction(FPM.matrix=FPM, mainTitle=NULL) #Call/execute the function defined above.
   print(graphToShow) #Print that graph.  
 }) #Close patternPlotFA
