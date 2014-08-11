@@ -8,3 +8,6 @@ server <- (Sys.info()["nodename"] %in% c("Lucky1304", "bbmc-shiny-public"))
 bbmcServer <- (Sys.info()["nodename"]=="bbmc-shiny-public")
 port <- ifelse( bbmcServer, 3838, 8100)
 shiny::runApp('shinyApp', launch.browser=!server, port=3838)
+
+# Deploy to shinyapps.io if the change is stable.  See https://github.com/rstudio/shinyapps/blob/master/guide/guide.md
+# shinyapps::deployApp()

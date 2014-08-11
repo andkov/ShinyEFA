@@ -37,7 +37,7 @@ for( packageName in dsInstallFromCran$PackageName ) {
 rm(dsInstallFromCran, packageName)
 #####################################
 ## @knitr UpdateCranPackages
-utils::update.packages(ask="graphics", checkBuilt=TRUE)
+utils::update.packages(ask=FALSE, checkBuilt=TRUE)
 
 #####################################
 ## @knitr InstallDevtools
