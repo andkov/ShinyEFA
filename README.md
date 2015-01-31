@@ -5,7 +5,7 @@ ShinyEFA is a web application created with [R](http://cran.rstudio.com/) and [Sh
 
 ShinyEFA uses datasets from the [psych package](http://cran.r-project.org/web/packages/psych/psych.pdf) by William Revelle and [gradient projection algorithms](http://www.stat.ucla.edu/research/gpa/) by Bernaards and Jennrich. The original factor pattern matrices are obtained from an unrotated solution of the factanal function of the stats packages. Advanced factor functions by [James Steiger](www.statpower.net) are used for RMSEA diagnostic. 
 
-The application is hosted on RStudio's Glimmer server [http://glimmer.rstudio.com/wibeasley/ShinyEFA/](http://glimmer.rstudio.com/wibeasley/ShinyEFA/), and the public GitHub code repository is available at [https://github.com/kavnoff/ShinyEFA/](https://github.com/kavnoff/ShinyEFA/).  Questions and comments are welcomed at Andrey's gmail account (koval.andrey).
+The application is hosted on RStudio's Glimmer server [http://glimmer.rstudio.com/wibeasley/ShinyEFA/](http://glimmer.rstudio.com/wibeasley/ShinyEFA/), and the public GitHub code repository is available at [https://github.com/andkov/ShinyEFA/](https://github.com/andkov/ShinyEFA/).  Questions and comments are welcomed at Andrey's gmail account (koval.andrey).
 
 *Selected References*
  * Revelle, W. (2013) psych: Procedures for Personality and Psychological Research, Northwestern University, Evanston, Illinois, USA, [http://CRAN.R-project.org/package=psych](http://CRAN.R-project.org/package=psych), Version = 1.3.10.
